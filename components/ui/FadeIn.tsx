@@ -25,7 +25,7 @@ export function FadeIn({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-10% 0px' });
 
-  const customEasing = [0.16, 1, 0.3, 1]; // Premium smooth ease-out (like Apple)
+  const customEasing: [number, number, number, number] = [0.16, 1, 0.3, 1]; // Premium smooth ease-out (like Apple)
 
   const directionOffsets = {
     up: { y: 40, x: 0 },
@@ -71,8 +71,8 @@ export function FadeIn({
 }
 
 // Sub-component for children of a staggered parent
-export function FadeInStaggerItem({ children, className = '' }: { children: ReactNode, className?: string }) {
-  const customEasing = [0.16, 1, 0.3, 1];
+export function FadeInStaggerItem({ children, className = '', style }: { children: ReactNode, className?: string, style?: React.CSSProperties }) {
+  const customEasing: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -84,7 +84,7 @@ export function FadeInStaggerItem({ children, className = '' }: { children: Reac
   };
 
   return (
-    <motion.div variants={itemVariants} className={className}>
+    <motion.div variants={itemVariants} className={className} style={style}>
       {children}
     </motion.div>
   );
