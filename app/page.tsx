@@ -11,6 +11,7 @@ import Gallery from "@/components/sections/Gallery";
 import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
+import FitnessCalculator from "@/components/sections/FitnessCalculator";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <main className="flex-1 w-full overflow-x-hidden">
         <Hero />
         <Stats />
+        <FitnessCalculator />
         <About />
         <Services />
         <Trainers />
