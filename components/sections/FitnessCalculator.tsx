@@ -167,7 +167,7 @@ export default function FitnessCalculator() {
   const labelClass = "block text-[11px] font-bold text-[rgba(240,240,240,0.5)] uppercase tracking-wider mb-2";
 
   return (
-    <section id="calculator" className="relative section-pad" style={{ background: 'var(--black)' }}>
+    <section id="calculator" className="relative min-h-[100svh] flex flex-col justify-center py-20" style={{ background: 'var(--black)' }}>
       {/* Background glow */}
       <div
         aria-hidden
