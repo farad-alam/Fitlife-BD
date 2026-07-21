@@ -33,6 +33,8 @@ export const metadata: Metadata = {
   },
 };
 
+import Script from 'next/script';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -65,6 +67,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col" style={{ background: '#080808', color: '#f0f0f0' }}>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-TMT7B6ZYMM" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TMT7B6ZYMM');
+          `}
+        </Script>
         {children}
       </body>
     </html>
