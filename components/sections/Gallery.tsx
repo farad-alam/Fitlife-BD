@@ -80,7 +80,8 @@ export default function Gallery() {
                 src={img.src}
                 alt={img.label}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover transition-transform duration-[1.5s] hover:scale-105"
                 style={{ filter: 'saturate(0.7)' }}
               />
               <div

@@ -35,7 +35,7 @@ export default function About() {
               >
                 <Image
                   src="/images/gym-interior.png"
-                  alt="Fitlife Gym Interior"
+                  alt="Fitlife Gym Interior - Premium Equipment and Workout Space"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"

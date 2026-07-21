@@ -17,6 +17,7 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fitlifebd.com'),
   title: "Fitlife Gym Bangladesh | Train. Transform. Dominate.",
   description:
     "Bangladesh's premier fitness chain with 7 locations across Rajshahi & Dhaka. Expert coaches, premium equipment, and real results since 2017. Join 1,000+ members today.",
@@ -39,6 +40,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${barlowCondensed.variable} scroll-smooth`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "HealthAndBeautyBusiness",
+              "name": "Fitlife Gym Bangladesh",
+              "image": "https://fitlifebd.com/images/hero-bg.png",
+              "@id": "https://fitlifebd.com",
+              "url": "https://fitlifebd.com",
+              "telephone": "+8801700000000",
+              "priceRange": "$$",
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Rajshahi & Dhaka",
+                "addressLocality": "Dhaka",
+                "addressCountry": "BD"
+              },
+              "description": "Bangladesh's premier fitness chain with 7 locations. Expert coaches, premium equipment, and real results since 2017."
+            })
+          }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col" style={{ background: '#080808', color: '#f0f0f0' }}>
         {children}
       </body>

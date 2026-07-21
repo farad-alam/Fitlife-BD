@@ -66,8 +66,9 @@ export default function Transformations() {
               <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
                 <Image
                   src={t.img}
-                  alt={`${t.name} transformation`}
+                  alt={`Fitness Transformation: ${t.name} - ${t.goal} at Fitlife Gym`}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   style={{ filter: 'saturate(0.7)' }}
                 />

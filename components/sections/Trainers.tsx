@@ -87,8 +87,9 @@ export default function Trainers() {
               <div className="relative overflow-hidden" style={{ aspectRatio: '3/4' }}>
                 <Image
                   src={t.img}
-                  alt={t.name}
+                  alt={`${t.name} - ${t.title} at Fitlife Gym`}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   style={{ filter: 'saturate(0.7) contrast(1.1)' }}
                 />

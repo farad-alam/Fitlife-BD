@@ -3,15 +3,17 @@ import Hero from "@/components/sections/Hero";
 import Stats from "@/components/sections/Stats";
 import About from "@/components/sections/About";
 import Services from "@/components/sections/Services";
-import Trainers from "@/components/sections/Trainers";
 import Pricing from "@/components/sections/Pricing";
-import Transformations from "@/components/sections/Transformations";
 import Branches from "@/components/sections/Branches";
-import Gallery from "@/components/sections/Gallery";
 import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
-import FitnessCalculator from "@/components/sections/FitnessCalculator";
+import dynamic from "next/dynamic";
+
+const FitnessCalculator = dynamic(() => import("@/components/sections/FitnessCalculator"));
+const Transformations = dynamic(() => import("@/components/sections/Transformations"));
+const Gallery = dynamic(() => import("@/components/sections/Gallery"));
+const Trainers = dynamic(() => import("@/components/sections/Trainers"));
 
 export default function Home() {
   return (
