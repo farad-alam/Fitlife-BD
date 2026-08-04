@@ -34,12 +34,11 @@ export default function About() {
                 style={{ aspectRatio: '4/5', maxWidth: '520px' }}
               >
                 <Image
-                  src="/images/gym-interior.png"
-                  alt="Fitlife Gym Interior - Premium Equipment and Workout Space"
+                  src="/images/abu-sufian-taj.jpg"
+                  alt="Abu Sufian Taj - Founder of FitLife Gym"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
-                  style={{ filter: 'saturate(0.8)' }}
+                  className="object-cover object-top"
                 />
                 {/* Green accent border */}
                 <div
