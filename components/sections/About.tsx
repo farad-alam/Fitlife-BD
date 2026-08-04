@@ -85,7 +85,7 @@ export default function About() {
 
               <h2
                 className="text-display mb-6"
-                style={{ fontSize: 'clamp(2.8rem, 5vw, 5rem)', color: 'var(--text)' }}
+                style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.5rem)', color: 'var(--text)' }}
               >
                 MORE THAN A<br />
                 <span style={{ color: 'var(--green)' }}>GYM.</span> A<br />
