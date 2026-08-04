@@ -100,7 +100,7 @@ export default function Footer() {
           <div className="flex flex-col gap-10 max-w-xs">
             <p className="text-sm leading-relaxed" style={{ color: 'rgba(240,240,240,0.45)' }}>
               Bangladesh&apos;s premier fitness chain. 7 locations.
-              1,000+ members. Transforming lives since 2017.
+              11,000+ members. Transforming lives since 2017.
             </p>
 
             <div>

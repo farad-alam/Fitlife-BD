@@ -3,7 +3,7 @@ import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
 const stats = [
   { num: '8+', label: 'Years', sub: 'Operating since 2017' },
-  { num: '1,000+', label: 'Members', sub: 'And growing daily' },
+  { num: '11,000+', label: 'Members', sub: 'And growing daily' },
   { num: '7', label: 'Branches', sub: 'Rajshahi & Dhaka' },
   { num: '30+', label: 'Coaches', sub: 'Certified trainers' },
 ];

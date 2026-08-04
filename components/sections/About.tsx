@@ -112,7 +112,7 @@ export default function About() {
                   {[
                     { label: 'Expert Coaches', desc: '30+ certified trainers' },
                     { label: 'Premium Equipment', desc: 'Olympic grade gear' },
-                    { label: 'Real Results', desc: '1000+ transformations' },
+                    { label: 'Real Results', desc: '11,000+ transformations' },
                     { label: 'Community', desc: 'Supportive environment' },
                   ].map((p) => (
                     <FadeInStaggerItem key={p.label}>

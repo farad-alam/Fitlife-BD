@@ -1,6 +1,6 @@
 export const gymStats = [
   { label: "Years Operating", number: 8, suffix: "+" },
-  { label: "Happy Members", number: 1000, suffix: "+" },
+  { label: "Happy Members", number: 11000, suffix: "+" },
   { label: "Locations in Bangladesh", number: 7, suffix: "" },
   { label: "Certified Trainers", number: 30, suffix: "+" },
 ];

@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://fitlifebd.com'),
   title: "Fitlife Gym Bangladesh | Train. Transform. Dominate.",
   description:
-    "Bangladesh's premier fitness chain with 7 locations across Rajshahi & Dhaka. Expert coaches, premium equipment, and real results since 2017. Join 1,000+ members today.",
+    "Bangladesh's premier fitness chain with 7 locations across Rajshahi & Dhaka. Expert coaches, premium equipment, and real results since 2017. Join 11,000+ members today.",
   keywords: "gym Bangladesh, fitness Rajshahi, gym Dhaka, personal training Bangladesh, Fitlife gym",
   openGraph: {
     title: "Fitlife Gym Bangladesh | Train. Transform. Dominate.",
-    description: "7 locations. 30+ coaches. 1,000+ members. Join Bangladesh's premier fitness chain.",
+    description: "7 locations. 30+ coaches. 11,000+ members. Join Bangladesh's premier fitness chain.",
     type: "website",
     locale: "en_BD",
   },

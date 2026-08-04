@@ -148,7 +148,7 @@ export default function Hero() {
           >
             {[
               { num: '7', label: 'Branches' },
-              { num: '1K+', label: 'Members' },
+              { num: '11K+', label: 'Members' },
               { num: '30+', label: 'Coaches' },
               { num: '2017', label: 'Founded' },
             ].map((s) => (
