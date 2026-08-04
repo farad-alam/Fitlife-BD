@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
 const coachingGoals = [
@@ -71,17 +72,60 @@ export default function HireCoach() {
       className="section-pad relative overflow-hidden"
       style={{ background: '#080808' }}
     >
-      {/* Background ambient lighting */}
+      {/* Layer 1: Massive Background Watermark Text */}
       <div
-        className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        className="absolute top-1/2 left-0 -translate-y-1/2 font-display font-black select-none pointer-events-none tracking-tighter uppercase whitespace-nowrap z-0"
         style={{
-          background: 'radial-gradient(circle, rgba(26,255,107,0.06) 0%, rgba(26,255,107,0) 70%)',
+          fontSize: 'clamp(7rem, 15vw, 16rem)',
+          color: 'rgba(255, 255, 255, 0.02)',
+          lineHeight: 1,
+        }}
+      >
+        1-ON-1 COACHING
+      </div>
+
+      {/* Layer 2: Atmospheric Action Photo Overlay with Seamless Edge Fades */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-12">
+        <Image
+          src="/images/workout-action.png"
+          alt="Fitlife Coaching Background"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {/* Top & bottom smooth gradient mask to blend with Trainers & Pricing sections */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to bottom, #080808 0%, transparent 15%, transparent 85%, #080808 100%), linear-gradient(to right, #080808 0%, rgba(8,8,8,0.5) 40%, rgba(8,8,8,0.8) 100%)',
+          }}
+        />
+      </div>
+
+      {/* Layer 3: Cyber-Grid Pattern Overlay */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none opacity-40"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(26,255,107,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(26,255,107,0.04) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+          maskImage: 'radial-gradient(ellipse 75% 60% at 70% 50%, black 20%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 75% 60% at 70% 50%, black 20%, transparent 100%)',
+        }}
+      />
+
+      {/* Layer 4: Neon Ambient Spotlights */}
+      <div
+        className="absolute top-1/3 left-1/4 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none z-0"
+        style={{
+          background: 'radial-gradient(circle, rgba(26,255,107,0.07) 0%, rgba(26,255,107,0) 70%)',
         }}
       />
       <div
-        className="absolute bottom-10 right-10 w-[400px] h-[400px] rounded-full pointer-events-none"
+        className="absolute bottom-10 right-10 w-[500px] h-[500px] rounded-full pointer-events-none z-0"
         style={{
-          background: 'radial-gradient(circle, rgba(26,255,107,0.04) 0%, rgba(26,255,107,0) 70%)',
+          background: 'radial-gradient(circle, rgba(26,255,107,0.06) 0%, rgba(26,255,107,0) 70%)',
         }}
       />
 
