@@ -98,15 +98,13 @@ export default function About() {
                 style={{ color: 'rgba(240,240,240,0.6)' }}
               >
                 <p>
-                  Founded in 2017 by <strong style={{ color: 'var(--text)' }}>Abu Sufian Taj (A.S. Taj)</strong> — an MBA graduate from IBA, Rajshahi University —
-                  Fitlife was born from a simple belief: that every person in Bangladesh deserves access to world-class fitness.
+                  <strong style={{ color: 'var(--text)' }}>Abu Sufian Taj</strong> is an ISSA (International Sports Sciences Association) Certified Fitness Trainer and an MBA graduate from the Institute of Business Administration (IBA), University of Rajshahi. He is a fitness entrepreneur, health educator, public speaker, and content creator dedicated to promoting evidence-based health and wellness.
                 </p>
                 <p>
-                  What started as a single gym in Rajshahi has grown into a network of 7 branches spanning Rajshahi and Dhaka,
-                  serving 1,000+ members with 30+ certified coaches and state-of-the-art equipment.
+                  As the founder of FitLife Gym, he is committed to making scientific fitness, proper nutrition, and healthy lifestyle practices accessible to people of all ages. Through seminars, workshops, and digital content, he educates audiences on topics such as strength training, metabolic health, obesity, diabetes prevention, fatty liver disease, and sustainable lifestyle change.
                 </p>
                 <p>
-                  We don&apos;t just build bodies — we transform lives, build discipline, and create lasting change.
+                  His mission is to empower individuals to improve their physical and mental well-being through informed choices, regular exercise, balanced nutrition, quality sleep, and sustainable healthy habits. Abu Sufian Taj believes that prevention is better than cure and is committed to helping people build healthier, stronger, and more productive lives.
                 </p>
               </div>
 
