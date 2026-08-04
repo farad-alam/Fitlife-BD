@@ -14,6 +14,7 @@ const FitnessCalculator = dynamic(() => import("@/components/sections/FitnessCal
 const Transformations = dynamic(() => import("@/components/sections/Transformations"));
 const Gallery = dynamic(() => import("@/components/sections/Gallery"));
 const Trainers = dynamic(() => import("@/components/sections/Trainers"));
+const HireCoach = dynamic(() => import("@/components/sections/HireCoach"));
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <About />
         <Services />
         <Trainers />
+        <HireCoach />
         <Pricing />
         <Transformations />
         <Branches />
