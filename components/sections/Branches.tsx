@@ -6,7 +6,7 @@ const branches = [
     name: 'Kadirganj',
     address: '1st Floor, Nagar Vaban Area, Kadirganj, Greater Road',
     phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.google.com',
+    mapLink: 'https://maps.app.goo.gl/UQBPmm2b4hbcHooZA',
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.5!2d88.6068!3d24.3636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbede2db4ce745%3A0xf0d02d48fdd6e8b!2sKadirganj%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000000',
   },
   {
@@ -14,7 +14,7 @@ const branches = [
     name: 'Uposhohor',
     address: 'Opposite Karaitola Boro Masjid, Uposhahar',
     phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.google.com',
+    mapLink: 'https://maps.app.goo.gl/FD7MbH824rf6sFDL8',
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635!2d88.5700!3d24.3700!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbef7f67e5a5c7%3A0x5c68f28f9df9ccb2!2sUposhahar%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000001',
   },
   {
@@ -22,7 +22,7 @@ const branches = [
     name: 'Vodra',
     address: 'Near Vodra Rail Crossing, Rajshahi',
     phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.google.com',
+    mapLink: 'https://maps.app.goo.gl/muvj6Ypsv9ZrAXTHA',
     mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634!2d88.6300!3d24.3750!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbede2db4ce745%3A0xf0d02d48fdd6e8b!2sVodra%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000002',
   },
   {
@@ -119,7 +119,8 @@ export default function Branches() {
           {branches.map((branch, i) => (
             <div
               key={`${branch.city}-${branch.name}`}
-              className="group card-dark overflow-hidden flex flex-col"
+              className="group card-dark overflow-hidden flex flex-col cursor-pointer transition-transform hover:scale-[1.02]"
+              onClick={() => window.open(branch.mapLink, '_blank')}
             >
               {/* Map embed */}
               <div className="relative overflow-hidden" style={{ height: '160px' }}>
@@ -181,6 +182,7 @@ export default function Branches() {
                     style={{ color: 'var(--green)' }}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     WhatsApp
                   </a>
