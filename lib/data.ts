@@ -43,25 +43,25 @@ export const trainersData = [
     name: "Abu Sufian Taj",
     specialization: "Founder & Head Coach",
     experience: "10+ Years",
-    image: "/images/trainer-1.jpg",
+    image: "/images/trainer-1.png",
   },
   {
     name: "John Doe",
     specialization: "Strength & Conditioning",
     experience: "5 Years",
-    image: "/images/trainer-2.jpg",
+    image: null,
   },
   {
     name: "Jane Smith",
     specialization: "Zumba & Aerobics",
     experience: "4 Years",
-    image: "/images/trainer-3.jpg",
+    image: null,
   },
   {
     name: "Alex Rahman",
     specialization: "Personal Trainer",
     experience: "6 Years",
-    image: "/images/trainer-4.jpg",
+    image: null,
   },
 ];
 
@@ -109,22 +109,22 @@ export const transformationsData = [
     name: "Rahul M.",
     goal: "Lost 18kg in 4 months",
     quote: "Fitlife completely changed my approach to fitness. It's more than a gym, it's a community.",
-    imageBefore: "/images/before-1.jpg",
-    imageAfter: "/images/after-1.jpg",
+    imageBefore: "/images/transformation-1.png",
+    imageAfter: null,
   },
   {
     name: "Sarah T.",
     goal: "Gained 5kg muscle mass",
     quote: "The trainers here are incredibly supportive. I've never felt stronger.",
-    imageBefore: "/images/before-2.jpg",
-    imageAfter: "/images/after-2.jpg",
+    imageBefore: null,
+    imageAfter: null,
   },
   {
     name: "Amin K.",
     goal: "Total body recomposition",
     quote: "The holistic approach to nutrition and training made all the difference.",
-    imageBefore: "/images/before-3.jpg",
-    imageAfter: "/images/after-3.jpg",
+    imageBefore: null,
+    imageAfter: null,
   },
 ];
 

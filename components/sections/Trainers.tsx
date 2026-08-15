@@ -94,7 +94,7 @@ export default function Trainers({ data }: { data?: TrainerData[] }) {
               {/* Image */}
               <div className="relative overflow-hidden" style={{ aspectRatio: '3/4' }}>
                 <Image
-                  src={t.imageUrl || '/images/trainer-featured.png'}
+                  src={t.imageUrl || '/images/trainer-1.png'}
                   alt={`${t.name} - ${t.specialization} at Fitlife Gym`}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
