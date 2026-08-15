@@ -5,7 +5,7 @@ import { asc } from 'drizzle-orm';
 
 export default async function StatsPage() {
   // Fetch stats from Neon DB
-  let stats = [];
+  let stats: any[] = [];
   try {
     stats = await db.select().from(gymStats).orderBy(asc(gymStats.sortOrder));
   } catch (error) {

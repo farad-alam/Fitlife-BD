@@ -102,12 +102,12 @@ export default function Branches({ data }: { data?: BranchData[] }) {
             <div
               key={`${branch.city}-${branch.name}`}
               className="group card-dark overflow-hidden flex flex-col cursor-pointer transition-transform hover:scale-[1.02]"
-              onClick={() => window.open(branch.mapLink, '_blank')}
+              onClick={() => branch.mapLink && window.open(branch.mapLink, '_blank')}
             >
               {/* Map embed */}
               <div className="relative overflow-hidden" style={{ height: '160px' }}>
                 <iframe
-                  src={branch.mapEmbed}
+                  src={branch.mapEmbed || ''}
                   width="100%"
                   height="160"
                   style={{ border: 0, filter: 'invert(0.9) hue-rotate(160deg) saturate(0.4)', pointerEvents: 'none' }}
@@ -150,7 +150,7 @@ export default function Branches({ data }: { data?: BranchData[] }) {
                   style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
                 >
                   <a
-                    href={branch.mapLink}
+                    href={branch.mapLink || '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-bold uppercase tracking-wider transition-colors hover:text-[var(--green)]"
