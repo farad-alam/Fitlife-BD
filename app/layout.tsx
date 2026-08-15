@@ -22,11 +22,28 @@ export const metadata: Metadata = {
   description:
     "Bangladesh's premier fitness chain with 7 locations across Rajshahi & Dhaka. Expert coaches, premium equipment, and real results since 2017. Join 11,000+ members today.",
   keywords: "gym Bangladesh, fitness Rajshahi, gym Dhaka, personal training Bangladesh, Fitlife gym",
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: "Fitlife Gym Bangladesh | Train. Transform. Dominate.",
     description: "7 locations. 30+ coaches. 11,000+ members. Join Bangladesh's premier fitness chain.",
     type: "website",
     locale: "en_BD",
+    images: [
+      {
+        url: '/images/hero-bg.png',
+        width: 1200,
+        height: 630,
+        alt: 'Fitlife Gym Bangladesh - Premium Fitness Facilities',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Fitlife Gym Bangladesh',
+    description: 'Join Bangladesh\'s premier fitness chain today.',
+    images: ['/images/hero-bg.png'],
   },
   verification: {
     google: "Aru-rsVdlkH-zPad_MaKCbMAFg6yN3NL68dY0yuK4Tw",
