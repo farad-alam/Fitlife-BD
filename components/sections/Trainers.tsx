@@ -1,18 +1,7 @@
 'use client';
 import Image from 'next/image';
 
-const trainers = [
-  {
-    name: 'Abu Sufian Taj',
-    title: 'Founder & Head Coach',
-    specialty: 'Strength & Conditioning',
-    exp: '10+ yrs',
-    img: '/images/trainer-1.png',
-    certified: ['ISSA', 'IBA MBA'],
-  },
-  {
-    name: 'Trainer 2',
-    title: 'Senior Coach',
+
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
 type TrainerData = {
