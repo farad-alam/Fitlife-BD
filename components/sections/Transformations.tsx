@@ -76,15 +76,46 @@ export default function Transformations({ data }: { data?: TransformationData[] 
               style={{ background: 'var(--surface)' }}
             >
               {/* Image with before/after overlay */}
-              <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
-                <Image
-                  src={t.imageAfter || t.imageBefore || '/images/transformation-1.png'}
-                  alt={`Fitness Transformation: ${t.name} - ${t.goal} at Fitlife Gym`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={{ filter: 'saturate(0.7)' }}
-                />
+              <div className="relative overflow-hidden flex w-full" style={{ aspectRatio: '4/5' }}>
+                {t.imageBefore && t.imageAfter ? (
+                  <>
+                    {/* Split View */}
+                    <div className="relative w-1/2 h-full border-r border-white/10">
+                      <Image
+                        src={t.imageBefore}
+                        alt={`Before: ${t.name}`}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 16vw, 16vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        style={{ filter: 'saturate(0.7)' }}
+                      />
+                      <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-white uppercase tracking-wider">Before</div>
+                    </div>
+                    <div className="relative w-1/2 h-full">
+                      <Image
+                        src={t.imageAfter}
+                        alt={`After: ${t.name}`}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 16vw, 16vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        style={{ filter: 'saturate(0.7)' }}
+                      />
+                      <div className="absolute top-4 right-4 bg-[#1AFF6B]/80 backdrop-blur-sm px-2 py-1 rounded text-[10px] font-bold text-black uppercase tracking-wider">After</div>
+                    </div>
+                  </>
+                ) : (
+                  /* Single Image View (Either a combined image, or just one) */
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={t.imageAfter || t.imageBefore || '/images/transformation-1.png'}
+                      alt={`Fitness Transformation: ${t.name} - ${t.goal} at Fitlife Gym`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{ filter: 'saturate(0.7)' }}
+                    />
+                  </div>
+                )}
                 <div
                   className="absolute inset-0"
                   style={{
