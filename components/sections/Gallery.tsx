@@ -1,17 +1,26 @@
 'use client';
 import Image from 'next/image';
 
-// Gallery uses gym images in a masonry-style grid
-const galleryImages = [
-  { src: '/images/gym-interior.png', alt: 'Gym floor', size: 'large' },
-  { src: '/images/workout-action.png', alt: 'Weight training', size: 'small' },
-  { src: '/images/athlete-hero.png', alt: 'Athlete training', size: 'small' },
-  { src: '/images/trainer-1.png', alt: 'Coach', size: 'medium' },
-  { src: '/images/transformation-1.png', alt: 'Transformation', size: 'medium' },
-  { src: '/images/gym-interior.png', alt: 'Equipment', size: 'small' },
-];
+type GalleryImageData = {
+  id: string;
+  imageUrl: string;
+  caption: string | null;
+  category: string | null;
+};
 
-export default function Gallery() {
+export default function Gallery({ data }: { data?: GalleryImageData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const images = data && data.length > 0 ? data : [
+    { id: 'g1', imageUrl: '/images/gym-interior.png', caption: 'Main Training Floor', category: 'Gym' },
+    { id: 'g2', imageUrl: '/images/workout-action.png', caption: 'Strength Training', category: 'Gym' },
+    { id: 'g3', imageUrl: '/images/athlete-hero.png', caption: 'Athlete Development', category: 'Gym' },
+    { id: 'g4', imageUrl: '/images/trainer-1.png', caption: 'Expert Coaching', category: 'Gym' },
+    { id: 'g5', imageUrl: '/images/transformation-1.png', caption: 'Transformation Results', category: 'Gym' },
+  ];
+
+  const featuredImage = images[0];
+  const otherImages = images.slice(1);
+
   return (
     <section
       id="gallery"
@@ -44,41 +53,40 @@ export default function Gallery() {
         {/* Masonry grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
           {/* Large featured image */}
-          <div className="col-span-2 row-span-2 relative overflow-hidden group" style={{ aspectRatio: '1/1' }}>
-            <Image
-              src="/images/gym-interior.png"
-              alt="Fitlife Gym Interior"
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              style={{ filter: 'saturate(0.8)' }}
-            />
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ background: 'rgba(26,255,107,0.08)' }}
-            />
-            <div
-              className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-              style={{ background: 'rgba(8,8,8,0.8)' }}
-            >
-              <p className="text-sm font-bold" style={{ color: 'var(--green)' }}>Main Training Floor</p>
+          {featuredImage && (
+            <div className="col-span-2 row-span-2 relative overflow-hidden group bg-[#111]" style={{ aspectRatio: '1/1' }}>
+              <Image
+                src={featuredImage.imageUrl}
+                alt={featuredImage.caption || 'Fitlife Gym'}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                style={{ filter: 'saturate(0.8)' }}
+              />
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: 'rgba(26,255,107,0.08)' }}
+              />
+              <div
+                className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                style={{ background: 'rgba(8,8,8,0.8)' }}
+              >
+                <p className="text-sm font-bold" style={{ color: 'var(--green)' }}>
+                  {featuredImage.caption || 'Featured'}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Smaller images */}
-          {[
-            { src: '/images/workout-action.png', label: 'Strength Training' },
-            { src: '/images/athlete-hero.png', label: 'Athlete Development' },
-            { src: '/images/trainer-1.png', label: 'Expert Coaching' },
-            { src: '/images/transformation-1.png', label: 'Transformation Results' },
-          ].map((img) => (
+          {otherImages.map((img) => (
             <div
-              key={img.label}
-              className="relative overflow-hidden group"
+              key={img.id}
+              className="relative overflow-hidden group bg-[#111]"
               style={{ aspectRatio: '1/1' }}
             >
               <Image
-                src={img.src}
-                alt={img.label}
+                src={img.imageUrl}
+                alt={img.caption || 'Gym image'}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transition-transform duration-[1.5s] hover:scale-105"
@@ -92,7 +100,9 @@ export default function Gallery() {
                 className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
                 style={{ background: 'rgba(8,8,8,0.85)' }}
               >
-                <p className="text-xs font-bold" style={{ color: 'var(--green)' }}>{img.label}</p>
+                <p className="text-xs font-bold" style={{ color: 'var(--green)' }}>
+                  {img.caption || img.category || 'Gallery Image'}
+                </p>
               </div>
             </div>
           ))}

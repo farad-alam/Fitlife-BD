@@ -3,17 +3,35 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
+import { submitContactLead } from '@/app/actions';
+
 export default function Contact() {
   const [form, setForm] = useState({ name: '', phone: '', branch: '', goal: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    const fullMessage = `Preferred Branch: ${form.branch}\nGoal: ${form.goal}\nMessage: ${form.message}`;
+
+    try {
+      await submitContactLead({
+        name: form.name,
+        phone: form.phone,
+        message: fullMessage,
+      });
+    } catch (error) {
+      console.error('Submission failed', error);
+    }
+
     const text = encodeURIComponent(
-      `Hi Fitlife! I'd like to enquire about membership.\n\nName: ${form.name}\nPhone: ${form.phone}\nPreferred Branch: ${form.branch}\nGoal: ${form.goal}\nMessage: ${form.message}`
+      `Hi Fitlife! I'd like to enquire about membership.\n\nName: ${form.name}\nPhone: ${form.phone}\n${fullMessage}`
     );
-    window.open(`https://wa.me/8801700000000?text=${text}`, '_blank');
+    window.open(`https://wa.me/8801632442096?text=${text}`, '_blank');
     setSent(true);
+    setLoading(false);
     setTimeout(() => setSent(false), 5000);
   };
 

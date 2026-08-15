@@ -9,6 +9,9 @@ import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import dynamic from "next/dynamic";
+import { db } from "@/db";
+import { gymStats, pricingPlans, faqs, trainers, transformations, branches, galleryImages } from "@/db/schema";
+import { asc, eq } from "drizzle-orm";
 
 const FitnessCalculator = dynamic(() => import("@/components/sections/FitnessCalculator"));
 const Transformations = dynamic(() => import("@/components/sections/Transformations"));
@@ -16,23 +19,58 @@ const Gallery = dynamic(() => import("@/components/sections/Gallery"));
 const Trainers = dynamic(() => import("@/components/sections/Trainers"));
 const HireCoach = dynamic(() => import("@/components/sections/HireCoach"));
 
-export default function Home() {
+export default async function Home() {
+  let statsData: any = [];
+  let pricingData: any = [];
+  let faqData: any = [];
+  let trainersData: any = [];
+  let transformationsData: any = [];
+  let branchesData: any = [];
+  let galleryData: any = [];
+
+  try {
+    statsData = await db.select().from(gymStats).orderBy(asc(gymStats.sortOrder));
+    
+    const dbPricing = await db.select().from(pricingPlans).where(eq(pricingPlans.isActive, true)).orderBy(asc(pricingPlans.sortOrder));
+    pricingData = dbPricing.map(p => ({
+      name: p.name,
+      tagline: p.bestFor,
+      price: p.price,
+      duration: p.duration,
+      period: p.bestFor,
+      features: p.features,
+      cta: 'Get Started',
+      highlight: p.isHighlighted,
+    }));
+
+    const dbFaqs = await db.select().from(faqs).where(eq(faqs.isVisible, true)).orderBy(asc(faqs.sortOrder));
+    faqData = dbFaqs.map(f => ({ q: f.question, a: f.answer }));
+
+    trainersData = await db.select().from(trainers).where(eq(trainers.isVisible, true)).orderBy(asc(trainers.sortOrder));
+    transformationsData = await db.select().from(transformations).where(eq(transformations.isVisible, true)).orderBy(asc(transformations.sortOrder));
+    branchesData = await db.select().from(branches).where(eq(branches.isActive, true)).orderBy(asc(branches.sortOrder));
+    galleryData = await db.select().from(galleryImages).where(eq(galleryImages.isVisible, true)).orderBy(asc(galleryImages.sortOrder));
+
+  } catch (error) {
+    console.error("Failed to fetch data for homepage:", error);
+  }
+
   return (
     <>
       <Navbar />
       <main className="flex-1 w-full overflow-x-hidden">
         <Hero />
-        <Stats />
+        <Stats data={statsData} />
         <FitnessCalculator />
         <About />
         <Services />
-        <Trainers />
+        <Trainers data={trainersData} />
         <HireCoach />
-        <Pricing />
-        <Transformations />
-        <Branches />
-        <Gallery />
-        <FAQ />
+        <Pricing data={pricingData} />
+        <Transformations data={transformationsData} />
+        <Branches data={branchesData} />
+        <Gallery data={galleryData} />
+        <FAQ data={faqData} />
         <Contact />
       </main>
       <Footer />

@@ -1,43 +1,49 @@
 'use client';
 
-const faqs = [
-  {
-    q: 'How do I join Fitlife Gym?',
-    a: 'Walk into any of our 7 branches and our staff will set you up immediately. You can also start the process via WhatsApp — we\'ll guide you through everything before you even arrive.',
-  },
-  {
-    q: 'What are the membership fees?',
-    a: 'Plans start from ৳1,500/month for a 1-month Starter plan, going down to ৳1,000/month for our 6–12 month Elite plan. Contact us for the latest pricing at your nearest branch.',
-  },
-  {
-    q: 'Is there a free trial?',
-    a: 'Yes! First-time visitors get a complimentary trial day. Come in, try the equipment, meet our coaches, and decide if Fitlife is right for you — no commitment required.',
-  },
-  {
-    q: 'What are the operating hours?',
-    a: 'All branches are open 7:00 AM to 11:00 PM, Saturday through Thursday. We are closed on Fridays.',
-  },
-  {
-    q: 'Is Fitlife suitable for women?',
-    a: 'Absolutely. Fitlife is built for everyone. We have female-friendly training areas, female coaches, and specific group classes like Zumba and aerobics designed for all fitness levels.',
-  },
-  {
-    q: 'Can I pause or cancel my membership?',
-    a: 'Elite plan members can freeze their membership for up to 1 month per year — useful for travel or medical situations. Contact your branch for details.',
-  },
-  {
-    q: 'Do you provide personal training?',
-    a: 'We have 30+ certified trainers across all branches offering personalized 1-on-1 coaching. Sessions can be added to any membership plan.',
-  },
-  {
-    q: 'Can I use any branch with one membership?',
-    a: 'Elite plan members have access to all 7 Fitlife branches. Starter and Pro plans are branch-specific. Speak with us for multi-branch upgrade options.',
-  },
-];
+type FAQData = {
+  q: string;
+  a: string;
+};
 
 import { useState } from 'react';
 
-export default function FAQ() {
+export default function FAQ({ data }: { data?: FAQData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const faqs = data && data.length > 0 ? data : [
+    {
+      q: 'How do I join Fitlife Gym?',
+      a: 'Walk into any of our 7 branches and our staff will set you up immediately. You can also start the process via WhatsApp — we\'ll guide you through everything before you even arrive.',
+    },
+    {
+      q: 'What are the membership fees?',
+      a: 'Plans start from ৳1,500/month for a 1-month Starter plan, going down to ৳1,000/month for our 6–12 month Elite plan. Contact us for the latest pricing at your nearest branch.',
+    },
+    {
+      q: 'Is there a free trial?',
+      a: 'Yes! First-time visitors get a complimentary trial day. Come in, try the equipment, meet our coaches, and decide if Fitlife is right for you — no commitment required.',
+    },
+    {
+      q: 'What are the operating hours?',
+      a: 'All branches are open 7:00 AM to 11:00 PM, Saturday through Thursday. We are closed on Fridays.',
+    },
+    {
+      q: 'Is Fitlife suitable for women?',
+      a: 'Absolutely. Fitlife is built for everyone. We have female-friendly training areas, female coaches, and specific group classes like Zumba and aerobics designed for all fitness levels.',
+    },
+    {
+      q: 'Can I pause or cancel my membership?',
+      a: 'Elite plan members can freeze their membership for up to 1 month per year — useful for travel or medical situations. Contact your branch for details.',
+    },
+    {
+      q: 'Do you provide personal training?',
+      a: 'We have 30+ certified trainers across all branches offering personalized 1-on-1 coaching. Sessions can be added to any membership plan.',
+    },
+    {
+      q: 'Can I use any branch with one membership?',
+      a: 'Elite plan members have access to all 7 Fitlife branches. Starter and Pro plans are branch-specific. Speak with us for multi-branch upgrade options.',
+    },
+  ];
+
   const [open, setOpen] = useState<number | null>(null);
 
   return (

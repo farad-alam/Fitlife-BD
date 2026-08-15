@@ -1,31 +1,44 @@
 'use client';
 import Image from 'next/image';
 
-const transformations = [
-  {
-    name: 'Rahul M.',
-    goal: 'Lost 18kg in 4 months',
-    duration: '4 months',
-    quote: 'Fitlife completely changed my approach. The coaches pushed me beyond what I thought possible.',
-    img: '/images/transformation-1.png',
-  },
-  {
-    name: 'Sarah T.',
-    goal: 'Gained 5kg lean muscle',
-    duration: '6 months',
-    quote: 'The trainers are incredibly supportive. I&apos;ve never felt stronger or more confident.',
-    img: '/images/transformation-1.png',
-  },
-  {
-    name: 'Amin K.',
-    goal: 'Complete body recomposition',
-    duration: '5 months',
-    quote: 'The combination of nutrition coaching and training made all the difference for me.',
-    img: '/images/transformation-1.png',
-  },
-];
+type TransformationData = {
+  id: string;
+  name: string;
+  goal: string | null;
+  quote: string | null;
+  imageBefore: string | null;
+  imageAfter: string | null;
+};
 
-export default function Transformations() {
+export default function Transformations({ data }: { data?: TransformationData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const transformations = data && data.length > 0 ? data : [
+    {
+      id: 'tf1',
+      name: 'Rahul M.',
+      goal: 'Lost 18kg in 4 months',
+      quote: 'Fitlife completely changed my approach. The coaches pushed me beyond what I thought possible.',
+      imageAfter: '/images/transformation-1.png',
+      imageBefore: '',
+    },
+    {
+      id: 'tf2',
+      name: 'Sarah T.',
+      goal: 'Gained 5kg lean muscle',
+      quote: 'The trainers are incredibly supportive. I&apos;ve never felt stronger or more confident.',
+      imageAfter: '/images/transformation-1.png',
+      imageBefore: '',
+    },
+    {
+      id: 'tf3',
+      name: 'Amin K.',
+      goal: 'Complete body recomposition',
+      quote: 'The combination of nutrition coaching and training made all the difference for me.',
+      imageAfter: '/images/transformation-1.png',
+      imageBefore: '',
+    },
+  ];
+
   return (
     <section
       id="transformations"
@@ -58,14 +71,14 @@ export default function Transformations() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           {transformations.map((t, i) => (
             <div
-              key={t.name}
+              key={t.id}
               className="group relative overflow-hidden"
               style={{ background: 'var(--surface)' }}
             >
               {/* Image with before/after overlay */}
               <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
                 <Image
-                  src={t.img}
+                  src={t.imageAfter || t.imageBefore || '/images/transformation-1.png'}
                   alt={`Fitness Transformation: ${t.name} - ${t.goal} at Fitlife Gym`}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
@@ -78,13 +91,6 @@ export default function Transformations() {
                     background: 'linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 60%)',
                   }}
                 />
-                {/* Duration badge */}
-                <div
-                  className="absolute top-4 left-4 px-3 py-1.5 font-display font-bold text-xs uppercase tracking-wider"
-                  style={{ background: 'rgba(26,255,107,0.9)', color: '#000' }}
-                >
-                  {t.duration}
-                </div>
                 {/* Result text */}
                 <div className="absolute bottom-4 left-4 right-4">
                   <p

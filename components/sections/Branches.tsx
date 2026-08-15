@@ -1,67 +1,49 @@
 'use client';
 
-const branches = [
-  {
-    city: 'Rajshahi',
-    name: 'Kadirganj',
-    address: '1st Floor, Nagar Vaban Area, Kadirganj, Greater Road',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/UQBPmm2b4hbcHooZA',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.5!2d88.6068!3d24.3636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbede2db4ce745%3A0xf0d02d48fdd6e8b!2sKadirganj%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000000',
-  },
-  {
-    city: 'Rajshahi',
-    name: 'Uposhohor',
-    address: 'Opposite Karaitola Boro Masjid, Uposhahar',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/FD7MbH824rf6sFDL8',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635!2d88.5700!3d24.3700!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbef7f67e5a5c7%3A0x5c68f28f9df9ccb2!2sUposhahar%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000001',
-  },
-  {
-    city: 'Rajshahi',
-    name: 'Vodra',
-    address: 'Near Vodra Rail Crossing, Rajshahi',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/muvj6Ypsv9ZrAXTHA',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634!2d88.6300!3d24.3750!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbede2db4ce745%3A0xf0d02d48fdd6e8b!2sVodra%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000002',
-  },
-  {
-    city: 'Rajshahi',
-    name: 'Godagari',
-    address: 'Godagari, Rajshahi',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/Y8V7vjVXW6A2H2x68',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3630!2d88.3825!3d24.5050!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbe56e1e4d3b4f%3A0x1!2sGodagari!5e0!3m2!1sen!2sbd!4v1717000000003',
-  },
-  {
-    city: 'Chapai Nawabganj',
-    name: 'Chapai Branch',
-    address: 'Chapai Nawabganj',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/tymqWG4gqHfpkvRZ6',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3622!2d88.2730!3d24.7000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fba22c4d26e6db%3A0x1!2sChapai%20Nawabganj!5e0!3m2!1sen!2sbd!4v1717000000004',
-  },
-  {
-    city: 'Dhaka',
-    name: 'Uttara',
-    address: 'Uttara, Dhaka',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/LDYCZDLRLyDjixtq8',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648!2d90.3978!3d23.8729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c5e88ea2bd75%3A0x1!2sUttara%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1717000000005',
-  },
-  {
-    city: 'Dhaka',
-    name: 'Dhanmondi',
-    address: 'Dhanmondi, Dhaka',
-    phone: '+880 17XX-XXXXXX',
-    mapLink: 'https://maps.app.goo.gl/w6XNz2CPs16Y3LiNA',
-    mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652!2d90.3742!3d23.7472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8e14cbc8127%3A0x1!2sDhanmondi%2C%20Dhaka!5e0!3m2!1sen!2sbd!4v1717000000006',
-  },
-];
+type BranchData = {
+  id: string;
+  city: string;
+  name: string;
+  address: string;
+  phone: string | null;
+  mapLink: string | null;
+  mapEmbed: string | null;
+};
 
-const cityGroups = ['Rajshahi', 'Chapai Nawabganj', 'Dhaka'];
+export default function Branches({ data }: { data?: BranchData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const branches = data && data.length > 0 ? data : [
+    {
+      id: 'b1',
+      city: 'Rajshahi',
+      name: 'Kadirganj',
+      address: '1st Floor, Nagar Vaban Area, Kadirganj, Greater Road',
+      phone: '+880 17XX-XXXXXX',
+      mapLink: 'https://maps.app.goo.gl/UQBPmm2b4hbcHooZA',
+      mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.5!2d88.6068!3d24.3636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbede2db4ce745%3A0xf0d02d48fdd6e8b!2sKadirganj%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000000',
+    },
+    {
+      id: 'b2',
+      city: 'Rajshahi',
+      name: 'Uposhohor',
+      address: 'Opposite Karaitola Boro Masjid, Uposhahar',
+      phone: '+880 17XX-XXXXXX',
+      mapLink: 'https://maps.app.goo.gl/FD7MbH824rf6sFDL8',
+      mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635!2d88.5700!3d24.3700!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbef7f67e5a5c7%3A0x5c68f28f9df9ccb2!2sUposhahar%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000001',
+    },
+    {
+      id: 'b3',
+      city: 'Rajshahi',
+      name: 'Vodra',
+      address: 'Near Vodra Rail Crossing, Rajshahi',
+      phone: '+880 17XX-XXXXXX',
+      mapLink: 'https://maps.app.goo.gl/muvj6Ypsv9ZrAXTHA',
+      mapEmbed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634!2d88.6300!3d24.3750!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbede2db4ce745%3A0xf0d02d48fdd6e8b!2sVodra%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000002',
+    },
+  ];
 
-export default function Branches() {
+  const cityGroups = Array.from(new Set(branches.map(b => b.city)));
+
   return (
     <section
       id="branches"

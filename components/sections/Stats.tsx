@@ -1,19 +1,26 @@
 'use client';
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
-const stats = [
-  { num: '8+', label: 'Years', sub: 'Operating since 2017' },
-  { num: '11,000+', label: 'Members', sub: 'And growing daily' },
-  { num: '7', label: 'Branches', sub: 'Rajshahi & Dhaka' },
-  { num: '30+', label: 'Coaches', sub: 'Certified trainers' },
-];
+type StatData = {
+  num: string | number;
+  label: string;
+  sub: string;
+};
 
 const marqueeItems = [
   'WEIGHT TRAINING', 'CARDIO', 'HIIT', 'ZUMBA', 'PERSONAL COACHING',
   'NUTRITION PLANS', 'BODY TRANSFORMATION', 'GROUP CLASSES', 'STRENGTH',
 ];
 
-export default function Stats() {
+export default function Stats({ data }: { data: StatData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const stats = data && data.length > 0 ? data : [
+    { num: '8+', label: 'Years', sub: 'Operating since 2017' },
+    { num: '11,000+', label: 'Members', sub: 'And growing daily' },
+    { num: '7', label: 'Branches', sub: 'Rajshahi & Dhaka' },
+    { num: '30+', label: 'Coaches', sub: 'Certified trainers' },
+  ];
+
   return (
     <>
       {/* ── Marquee Ticker ─────────────────────── */}

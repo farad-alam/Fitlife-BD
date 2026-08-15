@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navLinks = [
   { label: 'About', href: '#about' },
@@ -35,25 +36,14 @@ export default function Navbar() {
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <span
-            className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase"
-            style={{ color: 'var(--green)', lineHeight: 1 }}
-          >
-            FIT
-          </span>
-          <span
-            className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase"
-            style={{ color: 'var(--text)', lineHeight: 1 }}
-          >
-            LIFE
-          </span>
-          <span
-            className="text-[10px] font-bold uppercase tracking-[0.2em] ml-1 opacity-50"
-            style={{ color: 'var(--muted)', alignSelf: 'flex-end', paddingBottom: '4px' }}
-          >
-            BD
-          </span>
+        <Link href="/" className="flex items-center group relative w-32 h-14 md:w-40 md:h-16">
+          <Image
+            src="/images/logo.png"
+            alt="Fitlife Gymnasium"
+            fill
+            className="object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop Nav */}

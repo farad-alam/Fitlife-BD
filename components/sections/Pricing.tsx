@@ -1,57 +1,69 @@
 'use client';
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
-const plans = [
-  {
-    name: 'STARTER',
-    tagline: 'Begin your journey',
-    price: '1,500',
-    duration: '/ month',
-    period: '1-Month Plan',
-    features: [
-      'Full gym access',
-      'Locker facility',
-      'Basic guidance session',
-      'Open 7AM – 11PM',
-    ],
-    cta: 'Get Started',
-    highlight: false,
-  },
-  {
-    name: 'PRO',
-    tagline: 'Most popular choice',
-    price: '1,200',
-    duration: '/ month',
-    period: '3-Month Plan',
-    features: [
-      'Everything in Starter',
-      'Unlimited group classes',
-      'Nutrition consultation',
-      'Progress tracking',
-      'Priority support',
-    ],
-    cta: 'Join Pro',
-    highlight: true,
-  },
-  {
-    name: 'ELITE',
-    tagline: 'Maximum results',
-    price: '1,000',
-    duration: '/ month',
-    period: '6–12 Month Plan',
-    features: [
-      'Everything in Pro',
-      'Personal training (4x/mo)',
-      'Custom meal plan',
-      'Membership freeze option',
-      'All branches access',
-    ],
-    cta: 'Go Elite',
-    highlight: false,
-  },
-];
+type PricingPlanData = {
+  name: string;
+  tagline: string;
+  price: string;
+  duration: string;
+  period: string;
+  features: string[];
+  cta: string;
+  highlight: boolean;
+};
 
-export default function Pricing() {
+export default function Pricing({ data }: { data?: PricingPlanData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const plans = data && data.length > 0 ? data : [
+    {
+      name: 'STARTER',
+      tagline: 'Begin your journey',
+      price: '1,500',
+      duration: '/ month',
+      period: '1-Month Plan',
+      features: [
+        'Full gym access',
+        'Locker facility',
+        'Basic guidance session',
+        'Open 7AM – 11PM',
+      ],
+      cta: 'Get Started',
+      highlight: false,
+    },
+    {
+      name: 'PRO',
+      tagline: 'Most popular choice',
+      price: '1,200',
+      duration: '/ month',
+      period: '3-Month Plan',
+      features: [
+        'Everything in Starter',
+        'Unlimited group classes',
+        'Nutrition consultation',
+        'Progress tracking',
+        'Priority support',
+      ],
+      cta: 'Join Pro',
+      highlight: true,
+    },
+    {
+      name: 'ELITE',
+      tagline: 'Maximum results',
+      price: '1,000',
+      duration: '/ month',
+      period: '6–12 Month Plan',
+      features: [
+        'Everything in Pro',
+        'Personal training (4x/mo)',
+        'Custom meal plan',
+        'Membership freeze option',
+        'All branches access',
+      ],
+      cta: 'Go Elite',
+      highlight: false,
+    },
+  ];
+
   return (
     <section
       id="pricing"

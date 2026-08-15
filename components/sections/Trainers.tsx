@@ -13,30 +13,49 @@ const trainers = [
   {
     name: 'Trainer 2',
     title: 'Senior Coach',
-    specialty: 'Bodybuilding',
-    exp: '7+ yrs',
-    img: '/images/athlete-hero.png',
-    certified: ['NSCA', 'CPT'],
-  },
-  {
-    name: 'Trainer 3',
-    title: 'Group Fitness Coach',
-    specialty: 'Zumba & HIIT',
-    exp: '5+ yrs',
-    img: '/images/trainer-1.png',
-    certified: ['ACE', 'Zumba Pro'],
-  },
-  {
-    name: 'Trainer 4',
-    title: 'Nutrition Specialist',
-    specialty: 'Diet & Wellness',
-    exp: '6+ yrs',
-    img: '/images/athlete-hero.png',
-    certified: ['ISSN', 'CPT'],
-  },
-];
+import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
 
-export default function Trainers() {
+type TrainerData = {
+  id: string;
+  name: string;
+  specialization: string | null;
+  experience: string | null;
+  imageUrl: string | null;
+};
+
+export default function Trainers({ data }: { data?: TrainerData[] }) {
+  // Use DB data if provided, otherwise fallback to empty array or default
+  const trainers = data && data.length > 0 ? data : [
+    {
+      id: 't1',
+      name: 'Abu Sufian Taj',
+      specialization: 'ISSA Certified, Founder',
+      experience: '10+ Years',
+      imageUrl: '/images/trainer-featured.png',
+    },
+    {
+      id: 't2',
+      name: 'Sarah Rahman',
+      specialization: 'Zumba & Aerobics Expert',
+      experience: '5 Years',
+      imageUrl: '/images/trainer-featured.png',
+    },
+    {
+      id: 't3',
+      name: 'Tariq Islam',
+      specialization: 'Strength & Conditioning',
+      experience: '8 Years',
+      imageUrl: '/images/trainer-featured.png',
+    },
+    {
+      id: 't4',
+      name: 'Fatima Hossain',
+      specialization: 'Women\'s Fitness Specialist',
+      experience: '4 Years',
+      imageUrl: '/images/trainer-featured.png',
+    },
+  ];
+
   return (
     <section
       id="trainers"
@@ -86,8 +105,8 @@ export default function Trainers() {
               {/* Image */}
               <div className="relative overflow-hidden" style={{ aspectRatio: '3/4' }}>
                 <Image
-                  src={t.img}
-                  alt={`${t.name} - ${t.title} at Fitlife Gym`}
+                  src={t.imageUrl || '/images/trainer-featured.png'}
+                  alt={`${t.name} - ${t.specialization} at Fitlife Gym`}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
@@ -113,18 +132,16 @@ export default function Trainers() {
               {/* Info */}
               <div className="p-5">
                 <div className="flex gap-2 mb-2 flex-wrap">
-                  {t.certified.map((c) => (
-                    <span
-                      key={c}
-                      className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5"
-                      style={{
-                        border: '1px solid rgba(26,255,107,0.3)',
-                        color: 'var(--green)',
-                      }}
-                    >
-                      {c}
-                    </span>
-                  ))}
+                  {/* Mock certification tags or could add to DB later */}
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5"
+                    style={{
+                      border: '1px solid rgba(26,255,107,0.3)',
+                      color: 'var(--green)',
+                    }}
+                  >
+                    CERTIFIED
+                  </span>
                 </div>
                 <h3
                   className="font-display font-bold text-xl uppercase"
@@ -133,17 +150,14 @@ export default function Trainers() {
                   {t.name}
                 </h3>
                 <p className="text-sm mt-1" style={{ color: 'var(--green)' }}>
-                  {t.title}
+                  {t.specialization}
                 </p>
                 <div
                   className="flex items-center justify-between mt-3 pt-3"
                   style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
                 >
-                  <span className="text-xs" style={{ color: 'var(--muted)' }}>
-                    {t.specialty}
-                  </span>
                   <span className="text-xs font-bold" style={{ color: 'var(--text)' }}>
-                    {t.exp}
+                    {t.experience}
                   </span>
                 </div>
               </div>
