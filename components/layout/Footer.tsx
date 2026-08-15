@@ -147,24 +147,67 @@ export default function Footer() {
       </div>
 
       {/* ── MASSIVE brand name ── */}
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 overflow-hidden flex justify-center py-12">
-        {/* Green glow behind the logo */}
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 overflow-hidden" style={{ lineHeight: 0 }}>
+        {/* Green glow behind the text */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse 60% 100% at 50% 50%, rgba(26,255,107,0.07) 0%, transparent 70%)',
+              'radial-gradient(ellipse 60% 100% at 50% 80%, rgba(26,255,107,0.07) 0%, transparent 70%)',
           }}
         />
-        <div className="relative w-full max-w-2xl aspect-[2/1]">
-          <Image
-            src="/images/logo.png"
-            alt="Fitlife Gymnasium"
-            fill
-            className="object-contain"
-          />
-        </div>
+        <h2
+          className="font-display font-black uppercase text-center select-none w-full flex justify-between"
+          style={{
+            fontSize: 'clamp(4rem, 17.5vw, 16rem)',
+            lineHeight: 0.82,
+            letterSpacing: '0.04em',
+            /* Split-color using a background clip trick */
+            background:
+              'linear-gradient(180deg, #f0f0f0 0%, rgba(240,240,240,0.55) 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            /* Layered shadow for depth */
+            filter:
+              'drop-shadow(0 0 80px rgba(26,255,107,0.08))',
+            paddingBottom: '0.05em',
+            paddingLeft: '1vw',
+            paddingRight: '1vw',
+          }}
+        >
+          <span>F</span>
+          <span>I</span>
+          <span>T</span>
+          <span>L</span>
+          <span>I</span>
+          <span>F</span>
+          <span>E</span>
+          <span> </span>
+          <span
+            style={{
+              background: 'linear-gradient(180deg, var(--green) 0%, var(--green-dim) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 0 40px rgba(26,255,107,0.55))',
+            }}
+          >
+            B
+          </span>
+          <span
+            style={{
+              background: 'linear-gradient(180deg, var(--green) 0%, var(--green-dim) 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 0 40px rgba(26,255,107,0.55))',
+            }}
+          >
+            D
+          </span>
+        </h2>
       </div>
 
       {/* ── Bottom bar ── */}

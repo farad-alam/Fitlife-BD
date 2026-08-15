@@ -36,14 +36,36 @@ export default function Navbar() {
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-16 md:h-20 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center group relative w-32 h-14 md:w-40 md:h-16">
-          <Image
-            src="/images/logo.png"
-            alt="Fitlife Gymnasium"
-            fill
-            className="object-contain"
-            priority
-          />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-16 h-10 md:w-20 md:h-12">
+            <Image
+              src="/images/logo.png"
+              alt="Fitlife Gymnasium Logo"
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+          <div className="flex items-center">
+            <span
+              className="font-display text-xl md:text-2xl font-black tracking-wider uppercase"
+              style={{ color: 'var(--green)', lineHeight: 1 }}
+            >
+              FIT
+            </span>
+            <span
+              className="font-display text-xl md:text-2xl font-black tracking-wider uppercase"
+              style={{ color: 'var(--text)', lineHeight: 1 }}
+            >
+              LIFE
+            </span>
+            <span
+              className="text-[10px] font-bold uppercase tracking-[0.2em] ml-1 opacity-50"
+              style={{ color: 'var(--muted)', alignSelf: 'flex-end', paddingBottom: '3px' }}
+            >
+              BD
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
