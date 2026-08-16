@@ -66,7 +66,7 @@ export default async function Home() {
         <Services />
         <Trainers data={trainersData} />
         <HireCoach />
-        <Pricing data={pricingData} />
+        {/* <Pricing data={pricingData} /> */}
         <Transformations data={transformationsData} />
         <Branches data={branchesData} />
         <Gallery data={galleryData} />

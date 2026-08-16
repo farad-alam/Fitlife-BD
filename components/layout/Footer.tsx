@@ -15,7 +15,7 @@ const footerLinks = {
     { label: 'Our Story', href: '#about' },
     { label: 'Our Team', href: '#trainers' },
     { label: 'Locations', href: '#branches' },
-    { label: 'Pricing', href: '#pricing' },
+    // { label: 'Pricing', href: '#pricing' },
     { label: 'Transformations', href: '#transformations' },
   ],
   Connect: [
