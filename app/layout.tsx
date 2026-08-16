@@ -70,7 +70,7 @@ export default function RootLayout({
               "image": "https://fitlifebd.com/images/hero-bg.png",
               "@id": "https://fitlifebd.com",
               "url": "https://fitlifebd.com",
-              "telephone": "+8801700000000",
+              "telephone": "+8801632442096",
               "priceRange": "$$",
               "address": {
                 "@type": "PostalAddress",

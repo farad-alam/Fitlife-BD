@@ -183,7 +183,7 @@ export default function Pricing({ data }: { data?: PricingPlanData[] }) {
               </ul>
 
               <a
-                href="https://wa.me/8801700000000"
+                href="https://wa.me/8801632442096"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={plan.highlight ? 'btn-primary justify-center' : 'btn-outline justify-center'}

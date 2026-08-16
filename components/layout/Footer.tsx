@@ -19,10 +19,10 @@ const footerLinks = {
     { label: 'Transformations', href: '#transformations' },
   ],
   Connect: [
-    { label: 'WhatsApp Us', href: 'https://wa.me/8801700000000' },
-    { label: 'Facebook', href: 'https://facebook.com/fitlifegymrajshahi' },
-    { label: 'Instagram', href: '#' },
-    { label: 'YouTube', href: '#' },
+    { label: 'WhatsApp Us', href: 'https://wa.me/8801632442096' },
+    { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=100047091586084' },
+    { label: 'Instagram', href: 'https://www.instagram.com/fitlifegymnasium' },
+    { label: 'YouTube', href: 'https://www.youtube.com/@abusufiantaj' },
     { label: 'FAQ', href: '#faq' },
   ],
 };

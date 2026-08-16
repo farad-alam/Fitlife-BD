@@ -192,7 +192,7 @@ export default function Hero() {
 
       {/* ── Floating WhatsApp ─────────────────────── */}
       <a
-        href="https://wa.me/8801700000000"
+        href="https://wa.me/8801632442096"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-8 right-8 z-50 w-14 h-14 flex items-center justify-center rounded-full shadow-lg transition-transform hover:scale-110"

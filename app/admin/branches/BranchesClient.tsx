@@ -116,7 +116,7 @@ export function BranchesClient({ initialBranches }: { initialBranches: Branch[] 
               value={newBranch.phone}
               onChange={(e) => setNewBranch({ ...newBranch, phone: e.target.value })}
               className="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#1AFF6B]/50"
-              placeholder="e.g., +88017..."
+              placeholder="e.g., +8801632442096"
             />
           </div>
           <div>

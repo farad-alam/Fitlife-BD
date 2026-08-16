@@ -96,27 +96,21 @@ export default function Contact() {
                     value: 'Kadirganj, Rajshahi, Bangladesh',
                   },
                   {
-                    icon: (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.5">
-                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.62 12a19.79 19.79 0 01-3.07-8.67A2 2 0 013.53 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L7.91 9.91a16 16 0 006.16 6.16l.87-.87a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-                      </svg>
-                    ),
+                    icon: <MessageCircle size={20} color="var(--green)" />,
                     label: 'WhatsApp',
-                    value: '+880 17XX-XXXXXX',
+                    value: '+880 1632 442096',
+                    href: 'https://wa.me/8801632442096',
                   },
                   {
-                    icon: (
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.5">
-                        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
-                      </svg>
-                    ),
+                    icon: <Facebook size={20} color="var(--green)" />,
                     label: 'Facebook',
-                    value: 'facebook.com/fitlifegymrajshahi',
+                    value: 'facebook.com/profile.php?id=100047091586084',
+                    href: 'https://www.facebook.com/profile.php?id=100047091586084',
                   },
-                ].map(({ icon, label, value }) => (
-                  <div key={label} className="flex items-start gap-4">
+                ].map(({ icon, label, value, href }) => (
+                  <a key={label} href={href || '#'} target={href ? '_blank' : undefined} className="flex items-start gap-4 group">
                     <div
-                      className="w-10 h-10 flex-shrink-0 flex items-center justify-center"
+                      className="w-10 h-10 flex-shrink-0 flex items-center justify-center transition-colors group-hover:bg-[var(--green)]/10"
                       style={{ background: 'rgba(26,255,107,0.08)', border: '1px solid rgba(26,255,107,0.15)' }}
                     >
                       {icon}
@@ -138,7 +132,7 @@ export default function Contact() {
                 </p>
                 <div className="flex gap-3">
                   <a
-                    href="https://facebook.com/fitlifegymrajshahi"
+                    href="https://www.facebook.com/profile.php?id=100047091586084"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-[var(--green)] hover:text-black"
@@ -149,7 +143,9 @@ export default function Contact() {
                     </svg>
                   </a>
                   <a
-                    href="#"
+                    href="https://www.instagram.com/fitlifegymnasium"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-[var(--green)] hover:text-black"
                     style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}
                   >
@@ -158,7 +154,9 @@ export default function Contact() {
                     </svg>
                   </a>
                   <a
-                    href="#"
+                    href="https://www.youtube.com/@abusufiantaj"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-10 h-10 flex items-center justify-center transition-colors hover:bg-[var(--green)] hover:text-black"
                     style={{ border: '1px solid rgba(255,255,255,0.15)', color: 'var(--text)' }}
                   >

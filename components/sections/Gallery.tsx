@@ -41,7 +41,7 @@ export default function Gallery({ data }: { data?: GalleryImageData[] }) {
             </h2>
           </div>
           <a
-            href="https://facebook.com/fitlifegymrajshahi"
+            href="https://www.facebook.com/profile.php?id=100047091586084"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline self-start md:self-end"
@@ -112,7 +112,7 @@ export default function Gallery({ data }: { data?: GalleryImageData[] }) {
         <p className="text-center mt-8 text-sm" style={{ color: 'var(--muted)' }}>
           Follow us{' '}
           <a
-            href="https://facebook.com/fitlifegymrajshahi"
+            href="https://www.facebook.com/profile.php?id=100047091586084"
             className="underline transition-colors hover:text-[var(--green)]"
             target="_blank"
             rel="noopener noreferrer"

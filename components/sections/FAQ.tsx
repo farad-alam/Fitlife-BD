@@ -69,7 +69,7 @@ export default function FAQ({ data }: { data?: FAQData[] }) {
               Still need help? Our team is available on WhatsApp 7 days a week.
             </p>
             <a
-              href="https://wa.me/8801700000000"
+              href="https://wa.me/8801632442096"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
