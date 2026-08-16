@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { db } from '@/db';
 import { branches } from '@/db/schema';
 import { BranchesClient } from './BranchesClient';

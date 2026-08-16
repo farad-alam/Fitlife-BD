@@ -1,4 +1,6 @@
 import { ReactNode } from 'react';
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { LogOut, Home, BarChart2, Mail, Tag, HelpCircle, Users, MapPin, Image as ImageIcon, Settings, Repeat } from 'lucide-react';
 import { signOut } from '@/lib/auth'; // Wait, server action sign out is tricky, we can use client component for the button or a server action form
