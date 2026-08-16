@@ -155,28 +155,28 @@ export const branchesData = [
     address: "Godagari, Rajshahi",
     hours: "7AM – 11PM, Sat–Thu",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3617.0!2d88.4800!3d24.4600!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fbf3a3a3a3a3a3%3A0xa3a3a3a3a3a3a3a3!2sGodagari%2C%20Rajshahi!5e0!3m2!1sen!2sbd!4v1717000000003",
-    mapLink: "https://www.google.com/maps/search/Fitlife+Gym+Godagari+Rajshahi",
+    mapLink: "https://maps.app.goo.gl/YswKmEN259KdejiBA",
   },
   {
     name: "Chapai Nawabganj",
     address: "Baten Kha Road, Chapai Nawabganj (above Islami Bank)",
     hours: "7AM – 11PM, Sat–Thu",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3624.0!2d88.2700!3d24.5900!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fb81a81a81a81a%3A0x1a81a81a81a81a81!2sChapai+Nawabganj!5e0!3m2!1sen!2sbd!4v1717000000004",
-    mapLink: "https://www.google.com/maps/search/Fitlife+Gym+Baten+Kha+Road+Chapai+Nawabganj",
+    mapLink: "https://maps.app.goo.gl/aZkwj6SAHdPcSWde9",
   },
   {
     name: "Uttara, Dhaka",
     address: "Uttara, Dhaka",
     hours: "7AM – 11PM, Sat–Thu",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.0!2d90.3893275!3d23.8691301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c50068fdecb5%3A0xebc74cd8d9e151b3!2sFitlife+Gym+-+Uttara+Branch!5e0!3m2!1sen!2sbd!4v1717000000005",
-    mapLink: "https://www.google.com/maps/place/Fitlife+Gym+-+Uttara+Branch/@23.8691301,90.3893275,17z/data=!3m1!4b1!4m6!3m5!1s0x3755c50068fdecb5:0xebc74cd8d9e151b3!8m2!3d23.8691301!4d90.3893275!16s%2Fg%2F11lnmwwvmq",
+    mapLink: "https://maps.app.goo.gl/62ErsPbur8EV8AmcA",
   },
   {
     name: "Dhanmondi, Dhaka",
     address: "Rupayan Tower, 5th Floor, Dhanmondi 9/A, Dhaka",
     hours: "7AM – 11PM, Sat–Thu",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.5!2d90.3718!3d23.7461!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b9b4f4f4f4f4%3A0xf4f4f4f4f4f4f4f4!2sDhanmondi+9A%2C+Dhaka!5e0!3m2!1sen!2sbd!4v1717000000006",
-    mapLink: "https://www.google.com/maps/search/Fitlife+Gym+Rupayan+Tower+Dhanmondi+9A+Dhaka",
+    mapLink: "https://maps.app.goo.gl/K1NypWXHJbrpoKds5",
   },
 ];
 
