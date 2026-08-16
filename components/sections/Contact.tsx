@@ -121,7 +121,7 @@ export default function Contact() {
                       </p>
                       <p className="text-sm" style={{ color: 'var(--text)' }}>{value}</p>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
 
