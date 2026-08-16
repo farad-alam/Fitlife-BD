@@ -10,16 +10,16 @@ import Branches from "@/components/sections/Branches";
 import FAQ from "@/components/sections/FAQ";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import { db } from "@/db";
 import { gymStats, pricingPlans, faqs, trainers, transformations, branches, galleryImages } from "@/db/schema";
 import { asc, eq } from "drizzle-orm";
 
-const FitnessCalculator = dynamic(() => import("@/components/sections/FitnessCalculator"));
-const Transformations = dynamic(() => import("@/components/sections/Transformations"));
-const Gallery = dynamic(() => import("@/components/sections/Gallery"));
-const Trainers = dynamic(() => import("@/components/sections/Trainers"));
-const HireCoach = dynamic(() => import("@/components/sections/HireCoach"));
+const FitnessCalculator = nextDynamic(() => import("@/components/sections/FitnessCalculator"));
+const Transformations = nextDynamic(() => import("@/components/sections/Transformations"));
+const Gallery = nextDynamic(() => import("@/components/sections/Gallery"));
+const Trainers = nextDynamic(() => import("@/components/sections/Trainers"));
+const HireCoach = nextDynamic(() => import("@/components/sections/HireCoach"));
 
 export default async function Home() {
   let statsData: any = [];
