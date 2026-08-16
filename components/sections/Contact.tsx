@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
-import { MessageCircle, Facebook } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 import { submitContactLead } from '@/app/actions';
 
@@ -103,7 +103,11 @@ export default function Contact() {
                     href: 'https://wa.me/8801632442096',
                   },
                   {
-                    icon: <Facebook size={20} color="var(--green)" />,
+                    icon: (
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="1.5">
+                        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                      </svg>
+                    ),
                     label: 'Facebook',
                     value: 'facebook.com/profile.php?id=100047091586084',
                     href: 'https://www.facebook.com/profile.php?id=100047091586084',
