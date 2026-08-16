@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { FadeIn, FadeInStaggerItem } from '../ui/FadeIn';
+import { MessageCircle, Facebook } from 'lucide-react';
 
 import { submitContactLead } from '@/app/actions';
 
