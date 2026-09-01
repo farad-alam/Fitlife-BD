@@ -1,4 +1,4 @@
-export const revalidate = 3600; // ISR: rebuild at most once per hour. Admin saves trigger immediate revalidation via revalidatePath('/').
+export const revalidate = 86400; // ISR: rebuild max once per 24 hours. Admin saves trigger immediate revalidation.
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
