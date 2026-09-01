@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // ISR: rebuild at most once per hour. Admin saves trigger immediate revalidation via revalidatePath('/').
 
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/sections/Hero";
