@@ -33,17 +33,17 @@ export default async function Home() {
   try {
     statsData = await db.select().from(gymStats).orderBy(asc(gymStats.sortOrder));
     
-    const dbPricing = await db.select().from(pricingPlans).where(eq(pricingPlans.isActive, true)).orderBy(asc(pricingPlans.sortOrder));
-    pricingData = dbPricing.map(p => ({
-      name: p.name,
-      tagline: p.bestFor,
-      price: p.price,
-      duration: p.duration,
-      period: p.bestFor,
-      features: p.features,
-      cta: 'Get Started',
-      highlight: p.isHighlighted,
-    }));
+    // const dbPricing = await db.select().from(pricingPlans).where(eq(pricingPlans.isActive, true)).orderBy(asc(pricingPlans.sortOrder));
+    // pricingData = dbPricing.map(p => ({
+    //   name: p.name,
+    //   tagline: p.bestFor,
+    //   price: p.price,
+    //   duration: p.duration,
+    //   period: p.bestFor,
+    //   features: p.features,
+    //   cta: 'Get Started',
+    //   highlight: p.isHighlighted,
+    // }));
 
     const dbFaqs = await db.select().from(faqs).where(eq(faqs.isVisible, true)).orderBy(asc(faqs.sortOrder));
     faqData = dbFaqs.map(f => ({ q: f.question, a: f.answer }));
