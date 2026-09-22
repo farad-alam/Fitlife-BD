@@ -64,24 +64,43 @@ export default function SessionsClient({ initialEvents, initialRegistrations }: 
     e.preventDefault();
     setLoading(true);
     
-    const payload = {
-      ...form,
-      sessionDate: new Date(form.sessionDate),
-    };
+    try {
+      const payload = {
+        ...form,
+        // Send as ISO string to avoid Server Action serialization issues with Date objects
+        sessionDate: new Date(form.sessionDate).toISOString(),
+      };
 
-    if (editingId) {
-      await updateSessionEvent(editingId, payload);
-    } else {
-      await createSessionEvent(payload);
+      let res;
+      if (editingId) {
+        res = await updateSessionEvent(editingId, payload);
+      } else {
+        res = await createSessionEvent(payload);
+      }
+      
+      if (res?.success) {
+        window.location.reload();
+      } else {
+        alert(res?.error || 'Failed to save event');
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('An unexpected error occurred while saving.');
+      setLoading(false);
     }
-    
-    window.location.reload(); // Quick refresh for demo
   };
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this session? All associated registrations will also be deleted.')) {
-      await deleteSessionEvent(id);
-      window.location.reload();
+      setLoading(true);
+      const res = await deleteSessionEvent(id);
+      if (res?.success) {
+        window.location.reload();
+      } else {
+        alert(res?.error || 'Failed to delete event');
+        setLoading(false);
+      }
     }
   };
 

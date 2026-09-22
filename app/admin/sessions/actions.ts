@@ -11,16 +11,18 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function createSessionEvent(data: {
   title: string;
   description: string;
-  sessionDate: Date;
+  sessionDate: string | Date;
   targetCategory: string;
   inviteLink: string;
   isActive: boolean;
 }) {
   try {
-    if (data.isActive) {
+    const payload = { ...data, sessionDate: new Date(data.sessionDate) };
+    
+    if (payload.isActive) {
       await db.update(sessionEvents).set({ isActive: false });
     }
-    await db.insert(sessionEvents).values(data);
+    await db.insert(sessionEvents).values(payload);
     revalidatePath('/admin/sessions');
     revalidatePath('/free-session');
     revalidatePath('/');
@@ -33,10 +35,15 @@ export async function createSessionEvent(data: {
 
 export async function updateSessionEvent(id: string, data: any) {
   try {
-    if (data.isActive) {
+    const payload = { ...data };
+    if (payload.sessionDate) {
+      payload.sessionDate = new Date(payload.sessionDate);
+    }
+    
+    if (payload.isActive) {
       await db.update(sessionEvents).set({ isActive: false });
     }
-    await db.update(sessionEvents).set(data).where(eq(sessionEvents.id, id));
+    await db.update(sessionEvents).set(payload).where(eq(sessionEvents.id, id));
     revalidatePath('/admin/sessions');
     revalidatePath('/free-session');
     revalidatePath('/');
