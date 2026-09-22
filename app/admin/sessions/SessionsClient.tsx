@@ -84,9 +84,9 @@ export default function SessionsClient({ initialEvents, initialRegistrations }: 
         alert(res?.error || 'Failed to save event');
         setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-      alert('An unexpected error occurred while saving.');
+    } catch (err: any) {
+      console.error('Save event error:', err);
+      alert('Error: ' + (err?.message || 'An unexpected error occurred while saving.'));
       setLoading(false);
     }
   };

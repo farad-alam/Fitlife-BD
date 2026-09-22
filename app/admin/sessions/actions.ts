@@ -17,7 +17,14 @@ export async function createSessionEvent(data: {
   isActive: boolean;
 }) {
   try {
-    const payload = { ...data, sessionDate: new Date(data.sessionDate) };
+    const payload = {
+      title: data.title,
+      description: data.description || null,
+      sessionDate: new Date(data.sessionDate),
+      targetCategory: data.targetCategory || null,
+      inviteLink: data.inviteLink || null,
+      isActive: data.isActive,
+    };
     
     if (payload.isActive) {
       await db.update(sessionEvents).set({ isActive: false });
@@ -27,18 +34,24 @@ export async function createSessionEvent(data: {
     revalidatePath('/free-session');
     revalidatePath('/');
     return { success: true };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: 'Failed to create session' };
+  } catch (error: any) {
+    console.error('createSessionEvent error:', error);
+    return { success: false, error: error?.message || 'Failed to create session' };
   }
 }
 
 export async function updateSessionEvent(id: string, data: any) {
   try {
-    const payload = { ...data };
-    if (payload.sessionDate) {
-      payload.sessionDate = new Date(payload.sessionDate);
-    }
+    const payload: any = {
+      title: data.title,
+      description: data.description || null,
+      sessionDate: data.sessionDate ? new Date(data.sessionDate) : undefined,
+      targetCategory: data.targetCategory || null,
+      inviteLink: data.inviteLink || null,
+      isActive: data.isActive,
+    };
+    // remove undefined keys
+    Object.keys(payload).forEach(k => payload[k] === undefined && delete payload[k]);
     
     if (payload.isActive) {
       await db.update(sessionEvents).set({ isActive: false });
@@ -48,9 +61,9 @@ export async function updateSessionEvent(id: string, data: any) {
     revalidatePath('/free-session');
     revalidatePath('/');
     return { success: true };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: 'Failed to update session' };
+  } catch (error: any) {
+    console.error('updateSessionEvent error:', error);
+    return { success: false, error: error?.message || 'Failed to update session' };
   }
 }
 
@@ -114,15 +127,15 @@ export async function sendSessionInvitations(sessionId: string, category: string
 
         await db.update(sessionRegistrations).set({ isInvited: true }).where(eq(sessionRegistrations.id, user.id));
         sentCount++;
-      } catch (err) {
+      } catch (err: any) {
         console.error('Failed to send email to', user.email, err);
       }
     }
 
     revalidatePath('/admin/sessions');
     return { success: true, count: sentCount };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: 'Failed to send invitations' };
+  } catch (error: any) {
+    console.error('sendSessionInvitations error:', error);
+    return { success: false, error: error?.message || 'Failed to send invitations' };
   }
 }
