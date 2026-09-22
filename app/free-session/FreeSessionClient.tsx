@@ -92,6 +92,8 @@ export default function FreeSessionClient({ session, branches }: { session: any,
           <input
             required
             type="tel"
+            pattern="[0-9+\- ]+"
+            title="Only numbers, plus sign, spaces, and dashes are allowed"
             value={form.whatsappNumber}
             onChange={(e) => setForm({ ...form, whatsappNumber: e.target.value })}
             className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)] transition-colors"
@@ -128,7 +130,7 @@ export default function FreeSessionClient({ session, branches }: { session: any,
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-400 mb-2">Gender *</label>
           <div className="flex gap-4 mt-3">
@@ -146,19 +148,6 @@ export default function FreeSessionClient({ session, branches }: { session: any,
               </label>
             ))}
           </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-400 mb-2">Preferred Branch *</label>
-          <select
-            required
-            value={form.preferredBranch}
-            onChange={(e) => setForm({ ...form, preferredBranch: e.target.value })}
-            className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)] transition-colors"
-          >
-            {branches.map(b => (
-              <option key={b.id} value={b.name}>{b.name}</option>
-            ))}
-          </select>
         </div>
       </div>
 
