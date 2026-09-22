@@ -32,9 +32,13 @@ export default async function Home() {
   let galleryData: any = [];
 
   try {
-    statsData = await db.select().from(gymStats).orderBy(asc(gymStats.sortOrder));
+    const rawStats = await db.select().from(gymStats).orderBy(asc(gymStats.sortOrder));
+    statsData = rawStats.map(s => ({
+      num: `${s.number}${s.suffix || ''}`,
+      label: s.label,
+      sub: s.sub || ''
+    }));
     
-    // const dbPricing = await db.select().from(pricingPlans).where(eq(pricingPlans.isActive, true)).orderBy(asc(pricingPlans.sortOrder));
     // pricingData = dbPricing.map(p => ({
     //   name: p.name,
     //   tagline: p.bestFor,

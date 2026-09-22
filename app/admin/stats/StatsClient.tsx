@@ -8,6 +8,7 @@ type Stat = {
   label: string;
   number: number;
   suffix: string | null;
+  sub: string | null;
   sortOrder: number | null;
 };
 
@@ -21,7 +22,7 @@ export function StatsClient({ initialStats }: { initialStats: Stat[] }) {
 
   const handleSave = async (stat: Stat) => {
     setSavingId(stat.id);
-    await updateStat(stat.id, stat.label, stat.number, stat.suffix || '');
+    await updateStat(stat.id, stat.label, stat.number, stat.suffix || '', stat.sub || '');
     setSavingId(null);
   };
 
@@ -29,13 +30,23 @@ export function StatsClient({ initialStats }: { initialStats: Stat[] }) {
     <div className="space-y-6">
       {stats.map((stat) => (
         <div key={stat.id} className="flex flex-col md:flex-row gap-4 items-end bg-[#1A1A1A] p-4 rounded-lg border border-white/5">
-          <div className="flex-1 w-full">
+          <div className="flex-1 w-full md:w-1/4">
             <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Label</label>
             <input
               type="text"
               value={stat.label}
               onChange={(e) => handleChange(stat.id, 'label', e.target.value)}
               className="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#1AFF6B]/50"
+            />
+          </div>
+          <div className="flex-1 w-full md:w-1/4">
+            <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Subtitle</label>
+            <input
+              type="text"
+              value={stat.sub || ''}
+              onChange={(e) => handleChange(stat.id, 'sub', e.target.value)}
+              className="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#1AFF6B]/50"
+              placeholder="e.g. Operating since 2017"
             />
           </div>
           <div className="w-full md:w-32">

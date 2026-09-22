@@ -7,6 +7,7 @@ export const gymStats = pgTable('gym_stats', {
   label: text('label').notNull(),
   number: integer('number').notNull(),
   suffix: varchar('suffix', { length: 10 }),
+  sub: text('sub'),
   sortOrder: integer('sort_order').default(0),
 });
 

@@ -5,10 +5,10 @@ import { gymStats } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
-export async function updateStat(id: number, label: string, number: number, suffix: string) {
+export async function updateStat(id: number, label: string, number: number, suffix: string, sub: string) {
   try {
     await db.update(gymStats)
-      .set({ label, number, suffix })
+      .set({ label, number, suffix, sub })
       .where(eq(gymStats.id, id));
       
     // Revalidate public site and admin paths
