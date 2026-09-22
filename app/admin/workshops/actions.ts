@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db';
-import { workshops, workshopPaymentMethods, workshopRegistrations } from '@/db/schema';
+import { workshops, globalPaymentMethods, workshopRegistrations } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
@@ -32,7 +32,6 @@ export async function updateWorkshop(id: string, data: any) {
 export async function deleteWorkshop(id: string) {
   try {
     await db.delete(workshopRegistrations).where(eq(workshopRegistrations.workshopId, id));
-    await db.delete(workshopPaymentMethods).where(eq(workshopPaymentMethods.workshopId, id));
     await db.delete(workshops).where(eq(workshops.id, id));
     revalidatePath('/admin/workshops');
     revalidatePath('/workshops');
@@ -43,10 +42,10 @@ export async function deleteWorkshop(id: string) {
   }
 }
 
-export async function addPaymentMethod(workshopId: string, operator: string, accountNumber: string, accountType: string) {
+export async function addPaymentMethod(operator: string, accountNumber: string, accountType: string) {
   try {
-    await db.insert(workshopPaymentMethods).values({
-      workshopId, operator, accountNumber, accountType
+    await db.insert(globalPaymentMethods).values({
+      operator, accountNumber, accountType
     });
     revalidatePath('/admin/workshops');
     revalidatePath('/workshops');
@@ -59,7 +58,7 @@ export async function addPaymentMethod(workshopId: string, operator: string, acc
 
 export async function deletePaymentMethod(id: string) {
   try {
-    await db.delete(workshopPaymentMethods).where(eq(workshopPaymentMethods.id, id));
+    await db.delete(globalPaymentMethods).where(eq(globalPaymentMethods.id, id));
     revalidatePath('/admin/workshops');
     revalidatePath('/workshops');
     return { success: true };

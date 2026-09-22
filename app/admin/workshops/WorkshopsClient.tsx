@@ -16,12 +16,11 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
-    title: '', description: '', instructor: '', workshopDate: '', duration: '', price: '', totalSeats: '', imageUrl: '', isActive: false
+    title: '', description: '', instructor: '', workshopDate: '', duration: '', price: '', totalSeats: '', imageUrl: '', isActive: false, isFree: false
   });
 
   // Payment Method Form
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [selectedWorkshopId, setSelectedWorkshopId] = useState('');
   const [paymentForm, setPaymentForm] = useState({ operator: 'bKash', accountNumber: '', accountType: 'Personal' });
 
   // Registration Filter
@@ -49,11 +48,12 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
         totalSeats: workshop.totalSeats.toString(),
         imageUrl: workshop.imageUrl || '',
         isActive: workshop.isActive,
+        isFree: workshop.isFree || false,
       });
     } else {
       setEditingId(null);
       setForm({
-        title: '', description: '', instructor: '', workshopDate: '', duration: '', price: '', totalSeats: '', imageUrl: '', isActive: false
+        title: '', description: '', instructor: '', workshopDate: '', duration: '', price: '', totalSeats: '', imageUrl: '', isActive: false, isFree: false
       });
     }
     setIsModalOpen(true);
@@ -82,7 +82,7 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
   const handleAddPaymentMethod = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await addPaymentMethod(selectedWorkshopId, paymentForm.operator, paymentForm.accountNumber, paymentForm.accountType);
+    await addPaymentMethod(paymentForm.operator, paymentForm.accountNumber, paymentForm.accountType);
     window.location.reload();
   };
 
@@ -113,6 +113,33 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
 
       {activeTab === 'workshops' && (
         <div className="space-y-6">
+          <div className="bg-[#111] border border-white/10 p-6 rounded-xl mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold flex items-center gap-2"><CreditCard className="w-5 h-5 text-[var(--green)]" /> Global Payment Numbers</h2>
+              <button onClick={() => setIsPaymentModalOpen(true)} className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-3 py-1.5 text-sm rounded-lg transition-colors">
+                <Plus className="w-4 h-4" /> Add Number
+              </button>
+            </div>
+            {paymentMethods.length === 0 ? (
+              <p className="text-sm text-gray-500 italic">No global payment numbers configured. Paid workshops won't be able to receive payments.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {paymentMethods.map((method) => (
+                  <div key={method.id} className="bg-[#1A1A1A] border border-white/5 p-4 rounded-lg flex justify-between items-start">
+                    <div>
+                      <div className="font-bold text-white mb-1">{method.operator}</div>
+                      <div className="text-gray-400 font-mono text-sm">{method.accountNumber}</div>
+                      <div className="text-xs text-gray-500 uppercase mt-1">{method.accountType}</div>
+                    </div>
+                    <button onClick={() => handleDeletePaymentMethod(method.id)} className="text-red-400 hover:text-red-300 p-1">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">All Workshops</h2>
             <button onClick={() => handleOpenForm()} className="flex items-center gap-2 bg-[var(--green)] text-black px-4 py-2 rounded-lg font-bold hover:bg-green-400">
@@ -121,10 +148,7 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            {workshops.map(workshop => {
-              const methods = paymentMethods.filter(m => m.workshopId === workshop.id);
-              
-              return (
+            {workshops.map(workshop => (
               <div key={workshop.id} className="bg-[#111] border border-white/10 rounded-xl p-6 relative flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-1/3">
                   <div className="h-32 relative bg-black rounded-lg overflow-hidden mb-4 border border-white/10">
@@ -159,39 +183,12 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
                     <div><span className="text-gray-500">Instructor:</span> {workshop.instructor}</div>
                     <div><span className="text-gray-500">Date:</span> {new Date(workshop.workshopDate).toLocaleDateString()}</div>
                     <div><span className="text-gray-500">Duration:</span> {workshop.duration}</div>
-                    <div><span className="text-gray-500">Price:</span> <span className="text-[var(--green)] font-bold">{workshop.price}</span></div>
+                    <div><span className="text-gray-500">Price:</span> <span className="text-[var(--green)] font-bold">{workshop.isFree ? 'FREE' : workshop.price}</span></div>
                     <div><span className="text-gray-500">Seats:</span> {workshop.totalSeats}</div>
-                  </div>
-
-                  <div className="mt-4 pt-4 border-t border-white/10">
-                    <div className="flex justify-between items-center mb-3">
-                      <h4 className="text-sm font-bold text-white flex items-center gap-2"><CreditCard className="w-4 h-4" /> Payment Numbers</h4>
-                      <button onClick={() => { setSelectedWorkshopId(workshop.id); setIsPaymentModalOpen(true); }} className="text-xs text-[var(--green)] hover:underline flex items-center gap-1">
-                        <Plus className="w-3 h-3" /> Add Number
-                      </button>
-                    </div>
-                    
-                    {methods.length === 0 ? (
-                      <p className="text-xs text-gray-500 italic">No payment numbers configured. Users won't be able to pay.</p>
-                    ) : (
-                      <div className="space-y-2">
-                        {methods.map((method) => (
-                          <div key={method.id} className="flex justify-between items-center bg-[#1A1A1A] px-3 py-2 rounded border border-white/5">
-                            <div>
-                              <span className="font-bold text-white text-xs">{method.operator}</span>
-                              <span className="text-gray-400 text-xs ml-2">{method.accountNumber} ({method.accountType})</span>
-                            </div>
-                            <button onClick={() => handleDeletePaymentMethod(method.id)} className="text-red-400 hover:text-red-300">
-                              <Trash2 className="w-3 h-3" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
-            )})}
+            ))}
           </div>
         </div>
       )}
@@ -242,16 +239,27 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
                       </td>
                       <td className="px-6 py-4">
                         <div className="text-white">{reg.whatsappNumber}</div>
-                        <div className="text-xs">{reg.email}</div>
+                        <div className="text-xs text-gray-500">{reg.email}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex gap-2 items-center mb-1">
-                          <span className="font-bold text-white text-xs">{reg.paymentOperator}</span>
-                          <span className="text-xs">to {reg.paymentToNumber}</span>
-                        </div>
-                        <div className="text-xs bg-black px-2 py-1 rounded border border-white/10 inline-block font-mono tracking-widest text-[var(--green)]">
-                          TXN: {reg.transactionId}
-                        </div>
+                        {reg.paymentOperator ? (
+                          <>
+                            <div className="flex gap-2 items-center mb-1">
+                              <span className="font-bold text-white text-xs">{reg.paymentOperator}</span>
+                              <span className="text-xs">to {reg.paymentToNumber}</span>
+                            </div>
+                            <div className="text-xs bg-black px-2 py-1 rounded border border-white/10 inline-block font-mono tracking-widest text-[var(--green)] mb-1">
+                              TXN: {reg.transactionId}
+                            </div>
+                            {reg.senderPhoneNumber && (
+                              <div className="text-xs text-gray-400">
+                                Sender: <span className="text-white">{reg.senderPhoneNumber}</span>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          <span className="text-xs text-gray-500 italic">Free Workshop</span>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         {reg.paymentStatus === 'confirmed' && <span className="inline-flex items-center gap-1 text-green-400 bg-green-400/10 px-2 py-1 rounded text-xs font-bold"><CheckCircle className="w-3 h-3"/> Confirmed</span>}
@@ -340,10 +348,14 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
                   <input type="url" value={form.imageUrl} onChange={e => setForm({...form, imageUrl: e.target.value})} className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-2 text-white" placeholder="https://" />
                 </div>
 
-                <div className="col-span-2 pt-4 border-t border-white/10">
+                <div className="col-span-2 pt-4 border-t border-white/10 flex gap-6">
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input type="checkbox" checked={form.isActive} onChange={e => setForm({...form, isActive: e.target.checked})} className="w-5 h-5 accent-[var(--green)]" />
-                    <span className="text-white font-bold">Set as Active (Visible on public page)</span>
+                    <span className="text-white font-bold">Set as Active</span>
+                  </label>
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input type="checkbox" checked={form.isFree} onChange={e => setForm({...form, isFree: e.target.checked})} className="w-5 h-5 accent-[var(--green)]" />
+                    <span className="text-white font-bold">Free Workshop</span>
                   </label>
                 </div>
               </div>

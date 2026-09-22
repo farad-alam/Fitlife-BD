@@ -7,7 +7,7 @@ async function seedSessionsAndWorkshops() {
     sessionEvents,
     sessionRegistrations,
     workshops,
-    workshopPaymentMethods,
+    globalPaymentMethods,
     workshopRegistrations,
     branches,
   } = await import('./schema');
@@ -133,20 +133,17 @@ async function seedSessionsAndWorkshops() {
 
   console.log(`   ✅ Workshop 2: "${workshop2.title}"`);
 
-  // ─── 4. Workshop Payment Methods ──────────────────────────────────────────
-  console.log('\n💳 Seeding workshop payment methods...');
+  // ─── 4. Global Payment Methods ──────────────────────────────────────────
+  console.log('\n💳 Seeding global payment methods...');
 
   const paymentMethods = [
-    { workshopId: workshop1.id, operator: 'bKash',  accountNumber: '01632442096', accountType: 'Personal' },
-    { workshopId: workshop1.id, operator: 'Nagad',  accountNumber: '01632442096', accountType: 'Personal' },
-    { workshopId: workshop2.id, operator: 'bKash',  accountNumber: '01632442096', accountType: 'Personal' },
-    { workshopId: workshop2.id, operator: 'Nagad',  accountNumber: '01632442096', accountType: 'Personal' },
+    { operator: 'bKash',  accountNumber: '01632442096', accountType: 'Personal' },
+    { operator: 'Nagad',  accountNumber: '01632442096', accountType: 'Personal' },
   ];
 
   for (const m of paymentMethods) {
-    await db.insert(workshopPaymentMethods).values(m);
-    const label = m.workshopId === workshop1.id ? 'Nutrition' : 'Strength';
-    console.log(`   ✅ ${m.operator} ${m.accountNumber} → Workshop [${label}]`);
+    await db.insert(globalPaymentMethods).values(m);
+    console.log(`   ✅ ${m.operator} ${m.accountNumber}`);
   }
 
   // ─── 5. Sample Workshop Registrations ────────────────────────────────────
@@ -158,7 +155,7 @@ async function seedSessionsAndWorkshops() {
       name: 'Sumaiya Akter',
       whatsappNumber: '+8801600334455',
       email: 'sumaiya.akter@example.com',
-      preferredBranch: branch1,
+      senderPhoneNumber: '01711223344',
       paymentOperator: 'bKash',
       paymentToNumber: '01632442096',
       transactionId: 'BK7A3F2C',
@@ -169,7 +166,7 @@ async function seedSessionsAndWorkshops() {
       name: 'Arif Billah',
       whatsappNumber: '+8801766889900',
       email: 'arif.billah@example.com',
-      preferredBranch: branch2,
+      senderPhoneNumber: '01999001122',
       paymentOperator: 'Nagad',
       paymentToNumber: '01632442096',
       transactionId: 'NG5C8D1E',

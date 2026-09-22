@@ -8,10 +8,11 @@ export async function submitWorkshopRegistration(data: {
   name: string;
   whatsappNumber: string;
   email: string;
-  preferredBranch?: string;
-  paymentOperator: string;
-  paymentToNumber: string;
-  transactionId: string;
+  senderPhoneNumber?: string | null;
+  paymentOperator?: string | null;
+  paymentToNumber?: string | null;
+  transactionId?: string | null;
+  paymentStatus?: string;
 }) {
   try {
     await db.insert(workshopRegistrations).values({
@@ -19,10 +20,11 @@ export async function submitWorkshopRegistration(data: {
       name: data.name,
       whatsappNumber: data.whatsappNumber,
       email: data.email,
-      preferredBranch: data.preferredBranch,
-      paymentOperator: data.paymentOperator,
-      paymentToNumber: data.paymentToNumber,
-      transactionId: data.transactionId,
+      senderPhoneNumber: data.senderPhoneNumber || null,
+      paymentOperator: data.paymentOperator || null,
+      paymentToNumber: data.paymentToNumber || null,
+      transactionId: data.transactionId || null,
+      paymentStatus: data.paymentStatus || 'pending',
     });
     return { success: true };
   } catch (error) {

@@ -146,14 +146,14 @@ export const workshops = pgTable('workshops', {
   price: varchar('price', { length: 50 }).notNull(),
   totalSeats: integer('total_seats').notNull(),
   imageUrl: text('image_url'),
+  isFree: boolean('is_free').default(false),
   isActive: boolean('is_active').default(false),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-// Workshop Payment Methods
-export const workshopPaymentMethods = pgTable('workshop_payment_methods', {
+// Global Payment Methods
+export const globalPaymentMethods = pgTable('global_payment_methods', {
   id: uuid('id').defaultRandom().primaryKey(),
-  workshopId: uuid('workshop_id').references(() => workshops.id).notNull(),
   operator: varchar('operator', { length: 50 }).notNull(),
   accountNumber: varchar('account_number', { length: 50 }).notNull(),
   accountType: varchar('account_type', { length: 50 }).notNull(),
@@ -166,10 +166,10 @@ export const workshopRegistrations = pgTable('workshop_registrations', {
   name: varchar('name', { length: 255 }).notNull(),
   whatsappNumber: varchar('whatsapp_number', { length: 50 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
-  preferredBranch: varchar('preferred_branch', { length: 100 }),
-  paymentOperator: varchar('payment_operator', { length: 50 }).notNull(),
-  paymentToNumber: varchar('payment_to_number', { length: 50 }).notNull(),
-  transactionId: varchar('transaction_id', { length: 100 }).notNull(),
+  senderPhoneNumber: varchar('sender_phone_number', { length: 50 }),
+  paymentOperator: varchar('payment_operator', { length: 50 }),
+  paymentToNumber: varchar('payment_to_number', { length: 50 }),
+  transactionId: varchar('transaction_id', { length: 100 }),
   paymentStatus: varchar('payment_status', { length: 50 }).default('pending').notNull(),
   submittedAt: timestamp('submitted_at').defaultNow().notNull(),
   adminNotes: text('admin_notes'),

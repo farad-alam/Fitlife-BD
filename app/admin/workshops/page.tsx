@@ -1,12 +1,12 @@
 import { db } from '@/db';
-import { workshops, workshopPaymentMethods, workshopRegistrations } from '@/db/schema';
+import { workshops, globalPaymentMethods, workshopRegistrations } from '@/db/schema';
 import { desc } from 'drizzle-orm';
 import WorkshopsClient from './WorkshopsClient';
 
 export default async function AdminWorkshopsPage() {
   const allWorkshops = await db.select().from(workshops).orderBy(desc(workshops.createdAt));
   const allRegistrations = await db.select().from(workshopRegistrations).orderBy(desc(workshopRegistrations.submittedAt));
-  const allPaymentMethods = await db.select().from(workshopPaymentMethods);
+  const allPaymentMethods = await db.select().from(globalPaymentMethods);
 
   return (
     <div>

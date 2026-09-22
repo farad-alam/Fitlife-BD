@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { submitWorkshopRegistration } from './actions';
 
-export default function WorkshopsClient({ workshops, paymentMethodsMap, branches }: { workshops: any[], paymentMethodsMap: Record<string, any[]>, branches: any[] }) {
+export default function WorkshopsClient({ workshops, globalPaymentMethods }: { workshops: any[], globalPaymentMethods: any[] }) {
   const [selectedWorkshop, setSelectedWorkshop] = useState<any | null>(null);
   const [step, setStep] = useState(1); // 1: Info, 2: Payment & Submit, 3: Success
 
@@ -12,7 +12,7 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
     name: '',
     whatsappNumber: '',
     email: '',
-    preferredBranch: branches.length > 0 ? branches[0].name : '',
+    senderPhoneNumber: '',
     paymentOperator: '',
     transactionId: '',
   });
@@ -31,23 +31,11 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
     setSelectedWorkshop(null);
   };
 
-  const handleNextStep = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep(2);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.paymentOperator) {
-      setError('Please select a payment method');
-      return;
-    }
-    
+  const submitRegistration = async (isFree: boolean) => {
     setLoading(true);
     setError('');
 
-    const methods = paymentMethodsMap[selectedWorkshop.id] || [];
-    const selectedMethod = methods.find(m => m.operator === form.paymentOperator);
+    const selectedMethod = globalPaymentMethods.find(m => m.operator === form.paymentOperator);
 
     try {
       const res = await submitWorkshopRegistration({
@@ -55,10 +43,11 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
         name: form.name,
         whatsappNumber: form.whatsappNumber,
         email: form.email,
-        preferredBranch: form.preferredBranch,
-        paymentOperator: form.paymentOperator,
-        paymentToNumber: selectedMethod ? selectedMethod.accountNumber : '',
-        transactionId: form.transactionId,
+        senderPhoneNumber: isFree ? null : form.senderPhoneNumber,
+        paymentOperator: isFree ? null : form.paymentOperator,
+        paymentToNumber: isFree ? null : (selectedMethod ? selectedMethod.accountNumber : ''),
+        transactionId: isFree ? null : form.transactionId,
+        paymentStatus: isFree ? 'confirmed' : 'pending',
       });
 
       if (res.success) {
@@ -71,6 +60,29 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleNextStep = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedWorkshop.isFree) {
+      await submitRegistration(true);
+    } else {
+      setStep(2);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.paymentOperator) {
+      setError('Please select a payment method');
+      return;
+    }
+    if (!form.senderPhoneNumber) {
+      setError('Please provide the phone number you sent money from');
+      return;
+    }
+    
+    await submitRegistration(false);
   };
 
   if (workshops.length === 0) {
@@ -112,7 +124,7 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                   <span>💺</span> {workshop.totalSeats} seats total
                 </div>
                 <div className="flex items-center text-sm text-[var(--green)] font-bold gap-2">
-                  <span>💰</span> {workshop.price}
+                  <span>💰</span> {workshop.isFree ? 'FREE' : workshop.price}
                 </div>
               </div>
               
@@ -148,7 +160,7 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                   <div className="bg-white/5 p-4 rounded-lg mb-6 flex justify-between items-center">
                     <div>
                       <span className="block text-xs text-gray-400 uppercase tracking-wider mb-1">Registration Fee</span>
-                      <span className="text-xl font-bold text-[var(--green)]">{selectedWorkshop.price}</span>
+                      <span className="text-xl font-bold text-[var(--green)]">{selectedWorkshop.isFree ? 'FREE' : selectedWorkshop.price}</span>
                     </div>
                     <div className="text-right">
                       <span className="block text-xs text-gray-400 uppercase tracking-wider mb-1">Date</span>
@@ -168,14 +180,8 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                     <label className="block text-sm font-medium text-gray-400 mb-2">Email Address *</label>
                     <input required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)]" />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-2">Preferred Branch *</label>
-                    <select required value={form.preferredBranch} onChange={e => setForm({...form, preferredBranch: e.target.value})} className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)]">
-                      {branches.map(b => <option key={b.id} value={b.name}>{b.name}</option>)}
-                    </select>
-                  </div>
-                  <button type="submit" className="w-full btn-primary py-4 justify-center text-lg mt-4">
-                    Continue to Payment
+                  <button type="submit" disabled={loading} className="w-full btn-primary py-4 justify-center text-lg mt-4 disabled:opacity-50">
+                    {loading ? 'Processing...' : (selectedWorkshop.isFree ? 'Complete Registration' : 'Continue to Payment')}
                   </button>
                 </form>
               )}
@@ -198,7 +204,7 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                   <div className="space-y-3">
                     <label className="block text-sm font-medium text-gray-400">1. Select Payment Method</label>
                     <div className="flex flex-wrap gap-3">
-                      {(paymentMethodsMap[selectedWorkshop.id] || []).map(method => (
+                      {globalPaymentMethods.map(method => (
                         <label key={method.id} className={`flex-1 border rounded-xl p-4 cursor-pointer transition-all ${form.paymentOperator === method.operator ? 'border-[var(--green)] bg-green-500/5' : 'border-white/10 bg-[#1A1A1A] hover:border-white/30'}`}>
                           <div className="flex items-center gap-3">
                             <input 
@@ -213,8 +219,8 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                           </div>
                         </label>
                       ))}
-                      {(!paymentMethodsMap[selectedWorkshop.id] || paymentMethodsMap[selectedWorkshop.id].length === 0) && (
-                        <p className="text-sm text-red-400">No payment methods configured for this workshop.</p>
+                      {globalPaymentMethods.length === 0 && (
+                        <p className="text-sm text-red-400">No payment methods configured globally.</p>
                       )}
                     </div>
                   </div>
@@ -223,25 +229,38 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                     <div className="bg-[#1A1A1A] border border-[var(--green)]/30 rounded-xl p-5 text-center animate-in fade-in zoom-in-95">
                       <p className="text-sm text-gray-400 mb-2">Send <strong className="text-white">{selectedWorkshop.price}</strong> to this {form.paymentOperator} number:</p>
                       <p className="text-3xl font-display font-black tracking-widest text-[var(--green)] mb-1">
-                        {paymentMethodsMap[selectedWorkshop.id].find(m => m.operator === form.paymentOperator)?.accountNumber}
+                        {globalPaymentMethods.find(m => m.operator === form.paymentOperator)?.accountNumber}
                       </p>
                       <p className="text-xs text-gray-500 uppercase tracking-widest">
-                        {paymentMethodsMap[selectedWorkshop.id].find(m => m.operator === form.paymentOperator)?.accountType} Account
+                        {globalPaymentMethods.find(m => m.operator === form.paymentOperator)?.accountType} Account
                       </p>
                     </div>
                   )}
 
-                  <div className="pt-4 border-t border-white/10">
-                    <label className="block text-sm font-medium text-gray-400 mb-2">2. Enter Transaction ID *</label>
-                    <input 
-                      required 
-                      type="text" 
-                      value={form.transactionId} 
-                      onChange={e => setForm({...form, transactionId: e.target.value})} 
-                      className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)] uppercase" 
-                      placeholder="e.g. 8AB9C3D" 
-                    />
-                    <p className="text-xs text-gray-500 mt-2">After sending money, enter the Transaction ID you received.</p>
+                  <div className="pt-4 border-t border-white/10 space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">2. Sender Phone Number *</label>
+                      <input 
+                        required 
+                        type="tel" 
+                        value={form.senderPhoneNumber} 
+                        onChange={e => setForm({...form, senderPhoneNumber: e.target.value})} 
+                        className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)]" 
+                        placeholder="The number you sent money from" 
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-2">3. Enter Transaction ID *</label>
+                      <input 
+                        required 
+                        type="text" 
+                        value={form.transactionId} 
+                        onChange={e => setForm({...form, transactionId: e.target.value})} 
+                        className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[var(--green)] uppercase" 
+                        placeholder="e.g. 8AB9C3D" 
+                      />
+                      <p className="text-xs text-gray-500 mt-2">After sending money, enter the Transaction ID you received.</p>
+                    </div>
                   </div>
 
                   <button type="submit" disabled={loading} className="w-full btn-primary py-4 justify-center text-lg mt-4 disabled:opacity-50">
@@ -259,7 +278,9 @@ export default function WorkshopsClient({ workshops, paymentMethodsMap, branches
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-3">Registration Submitted!</h3>
                   <p className="text-gray-400 mb-6">
-                    Your payment is currently under review. We'll confirm your registration within 24 hours via WhatsApp.
+                    {selectedWorkshop.isFree 
+                      ? "Your registration for this free workshop is confirmed! We'll send you further details via WhatsApp."
+                      : "Your payment is currently under review. We'll confirm your registration within 24 hours via WhatsApp."}
                   </p>
                   <button onClick={closeModal} className="btn-outline justify-center w-full py-3">
                     Close
