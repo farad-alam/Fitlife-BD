@@ -36,15 +36,19 @@ export default function FitnessCalculator() {
   const [macroDiet, setMacroDiet] = useState<DietPlan>('mc');
   const [calcMacros, setCalcMacros] = useState<{ c: number; p: number; f: number } | null>(null);
 
-  // --- Body Fat State ---
+  // --- Body Fat State (US Navy Method) ---
   const [bfGender, setBfGender] = useState<Gender>('male');
   const [bfWeight, setBfWeight] = useState<string>('');
   const [bfWaist, setBfWaist] = useState<string>('');
-  const [bfWrist, setBfWrist] = useState<string>('');
-  const [bfHip, setBfHip] = useState<string>('');
-  const [bfForearm, setBfForearm] = useState<string>('');
+  const [bfNeck, setBfNeck] = useState<string>('');
+  const [bfHip, setBfHip] = useState<string>('');        // female only
+  const [bfFt, setBfFt] = useState<string>('5');
+  const [bfIn, setBfIn] = useState<string>('8');
+  const [bfError, setBfError] = useState<string>('');
 
   const [calcBf, setCalcBf] = useState<number | null>(null);
+  const [calcLeanMass, setCalcLeanMass] = useState<number | null>(null);
+  const [calcFatMass, setCalcFatMass] = useState<number | null>(null);
 
   // --- Logic: BMR ---
   const handleCalculateBmr = (e: React.FormEvent) => {
@@ -116,41 +120,77 @@ export default function FitnessCalculator() {
     });
   }, [macroCals, macroDiet]);
 
-  // --- Logic: Body Fat ---
+  // --- Logic: Body Fat (US Navy Method) ---
+  // Male:   BF% = 86.010 × log10(waist − neck) − 70.041 × log10(height) + 36.76
+  // Female: BF% = 163.205 × log10(waist + hip − neck) − 97.684 × log10(height) − 78.387
+  // All measurements in inches.
   const handleCalculateBf = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!bfWeight || !bfWaist) {
-      alert("Please enter at least weight and waist.");
-      return;
-    }
-    
+    setBfError('');
+    setCalcBf(null);
+    setCalcLeanMass(null);
+    setCalcFatMass(null);
+
     const weightKg = parseFloat(bfWeight);
-    const weightLbs = weightKg * 2.20462;
     const waistIn = parseFloat(bfWaist);
-    
-    let leanMass = 0;
-    let fatMass = 0;
+    const neckIn = parseFloat(bfNeck);
+    const ft = parseInt(bfFt);
+    const inch = parseInt(bfIn);
+    const heightIn = ft * 12 + inch;
+
+    if (!bfWeight || isNaN(weightKg)) { setBfError('Please enter your weight.'); return; }
+    if (!bfWaist || isNaN(waistIn)) { setBfError('Please enter your waist measurement.'); return; }
+    if (!bfNeck || isNaN(neckIn)) { setBfError('Please enter your neck measurement.'); return; }
+    if (heightIn <= 0) { setBfError('Please select your height.'); return; }
+
     let bfp = 0;
 
     if (bfGender === 'male') {
-      leanMass = (weightLbs * 1.082) + 94.42 - (waistIn * 4.15);
-    } else {
-      const wristIn = parseFloat(bfWrist) || 0;
-      const hipIn = parseFloat(bfHip) || 0;
-      const forearmIn = parseFloat(bfForearm) || 0;
-      
-      if (!bfWrist || !bfHip || !bfForearm) {
-        alert("For females, wrist, hip, and forearm measurements are also required.");
+      const diff = waistIn - neckIn;
+      if (diff <= 0) {
+        setBfError('Waist must be larger than neck. Please check your measurements.');
         return;
       }
-      
-      leanMass = (weightLbs * 0.732) + 8.987 + (wristIn / 3.14) - (waistIn * 0.157) - (hipIn * 0.249) + (forearmIn * 0.434);
+      bfp = 86.010 * Math.log10(diff) - 70.041 * Math.log10(heightIn) + 36.76;
+    } else {
+      const hipIn = parseFloat(bfHip);
+      if (!bfHip || isNaN(hipIn)) { setBfError('Please enter your hip measurement.'); return; }
+      const combo = waistIn + hipIn - neckIn;
+      if (combo <= 0) {
+        setBfError('Please check your measurements — waist + hip must be greater than neck.');
+        return;
+      }
+      bfp = 163.205 * Math.log10(combo) - 97.684 * Math.log10(heightIn) - 78.387;
     }
-    
-    fatMass = weightLbs - leanMass;
-    bfp = (fatMass / weightLbs) * 100;
-    
-    setCalcBf(parseFloat(bfp.toFixed(2)));
+
+    if (bfp < 0 || bfp > 70) {
+      setBfError('Result seems out of range. Please double-check your measurements are in inches.');
+      return;
+    }
+
+    const fatMassKg = weightKg * (bfp / 100);
+    const leanMassKg = weightKg - fatMassKg;
+
+    setCalcBf(parseFloat(bfp.toFixed(1)));
+    setCalcFatMass(parseFloat(fatMassKg.toFixed(1)));
+    setCalcLeanMass(parseFloat(leanMassKg.toFixed(1)));
+  };
+
+  // ACE Body Fat Classification
+  const getBfCategory = (bfp: number, gender: Gender): { label: string; color: string; bg: string } => {
+    if (gender === 'male') {
+      if (bfp <= 5)  return { label: 'Essential Fat', color: 'text-blue-400', bg: 'bg-blue-400/15 border-blue-400/30' };
+      if (bfp <= 13) return { label: 'Athlete',       color: 'text-[var(--green)]', bg: 'bg-[rgba(26,255,107,0.1)] border-[rgba(26,255,107,0.3)]' };
+      if (bfp <= 17) return { label: 'Fitness',       color: 'text-[var(--green)]', bg: 'bg-[rgba(26,255,107,0.08)] border-[rgba(26,255,107,0.2)]' };
+      if (bfp <= 24) return { label: 'Average',       color: 'text-yellow-400',  bg: 'bg-yellow-400/10 border-yellow-400/30' };
+      return               { label: 'Obese',          color: 'text-red-400',     bg: 'bg-red-400/10 border-red-400/30' };
+    } else {
+      if (bfp <= 13) return { label: 'Essential Fat', color: 'text-blue-400',    bg: 'bg-blue-400/15 border-blue-400/30' };
+      if (bfp <= 20) return { label: 'Athlete',       color: 'text-[var(--green)]', bg: 'bg-[rgba(26,255,107,0.1)] border-[rgba(26,255,107,0.3)]' };
+      if (bfp <= 24) return { label: 'Fitness',       color: 'text-[var(--green)]', bg: 'bg-[rgba(26,255,107,0.08)] border-[rgba(26,255,107,0.2)]' };
+      if (bfp <= 31) return { label: 'Average',       color: 'text-yellow-400',  bg: 'bg-yellow-400/10 border-yellow-400/30' };
+      return               { label: 'Obese',          color: 'text-red-400',     bg: 'bg-red-400/10 border-red-400/30' };
+    }
   };
 
   const useBfForBmr = () => {
@@ -158,6 +198,9 @@ export default function FitnessCalculator() {
       setBmrBodyFat(calcBf.toString());
       if (bfWeight && !bmrWeight) setBmrWeight(bfWeight);
       if (bfGender !== bmrGender) setBmrGender(bfGender);
+      // Carry height over too
+      setBmrFt(bfFt);
+      setBmrIn(bfIn);
       setActiveTab('bmr');
     }
   };
@@ -165,6 +208,7 @@ export default function FitnessCalculator() {
   // Shared Input Style
   const inputClass = "w-full bg-[var(--surface-2)] border border-[rgba(255,255,255,0.07)] focus:border-[var(--green)] outline-none text-white px-4 py-3 text-sm transition-colors";
   const labelClass = "block text-[11px] font-bold text-[rgba(240,240,240,0.5)] uppercase tracking-wider mb-2";
+  const tipClass = "text-[10px] text-[rgba(240,240,240,0.35)] mt-1.5 leading-relaxed";
 
   return (
     <section id="calculator" className="relative min-h-[100svh] flex flex-col justify-center py-20" style={{ background: 'var(--black)' }}>
@@ -307,51 +351,76 @@ export default function FitnessCalculator() {
                 </motion.form>
               )}
 
-              {/* --- BODY FAT TAB --- */}
+              {/* --- BODY FAT TAB (US Navy Method) --- */}
               {activeTab === 'bodyfat' && (
                 <motion.form
                   key="bodyfat"
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
                   onSubmit={handleCalculateBf}
-                  className="space-y-6"
+                  className="space-y-5"
                 >
-                  <div className="flex gap-4">
-                    <button type="button" onClick={() => setBfGender('male')} className={`flex-1 py-3 border text-sm font-bold uppercase tracking-wider transition-colors ${bfGender === 'male' ? 'border-[var(--green)] text-[var(--green)] bg-[rgba(26,255,107,0.05)]' : 'border-[rgba(255,255,255,0.1)] text-[rgba(240,240,240,0.5)] hover:border-[rgba(255,255,255,0.3)]'}`}>Male</button>
-                    <button type="button" onClick={() => setBfGender('female')} className={`flex-1 py-3 border text-sm font-bold uppercase tracking-wider transition-colors ${bfGender === 'female' ? 'border-[var(--green)] text-[var(--green)] bg-[rgba(26,255,107,0.05)]' : 'border-[rgba(255,255,255,0.1)] text-[rgba(240,240,240,0.5)] hover:border-[rgba(255,255,255,0.3)]'}`}>Female</button>
+                  {/* Method badge */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-4">
+                      <button type="button" onClick={() => { setBfGender('male'); setCalcBf(null); setBfError(''); }} className={`flex-1 py-3 px-6 border text-sm font-bold uppercase tracking-wider transition-colors ${bfGender === 'male' ? 'border-[var(--green)] text-[var(--green)] bg-[rgba(26,255,107,0.05)]' : 'border-[rgba(255,255,255,0.1)] text-[rgba(240,240,240,0.5)] hover:border-[rgba(255,255,255,0.3)]'}`}>Male</button>
+                      <button type="button" onClick={() => { setBfGender('female'); setCalcBf(null); setBfError(''); }} className={`flex-1 py-3 px-6 border text-sm font-bold uppercase tracking-wider transition-colors ${bfGender === 'female' ? 'border-[var(--green)] text-[var(--green)] bg-[rgba(26,255,107,0.05)]' : 'border-[rgba(255,255,255,0.1)] text-[rgba(240,240,240,0.5)] hover:border-[rgba(255,255,255,0.3)]'}`}>Female</button>
+                    </div>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[rgba(26,255,107,0.7)] border border-[rgba(26,255,107,0.2)] px-2 py-1">US Navy Method</span>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1">
-                      <label className={labelClass}>Weight (KG)</label>
-                      <input type="number" step="0.1" value={bfWeight} onChange={e => setBfWeight(e.target.value)} className={inputClass} />
-                    </div>
-                    <div className="flex-1">
-                      <label className={labelClass}>Waist (Inch)</label>
-                      <input type="number" step="0.1" value={bfWaist} onChange={e => setBfWaist(e.target.value)} className={inputClass} />
-                    </div>
-                  </div>
-
-                  {bfGender === 'female' && (
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="flex-1">
-                        <label className={labelClass}>Wrist (Inch)</label>
-                        <input type="number" step="0.1" value={bfWrist} onChange={e => setBfWrist(e.target.value)} className={inputClass} />
-                      </div>
-                      <div className="flex-1">
-                        <label className={labelClass}>Hip (Inch)</label>
-                        <input type="number" step="0.1" value={bfHip} onChange={e => setBfHip(e.target.value)} className={inputClass} />
-                      </div>
+                  {/* Error message */}
+                  {bfError && (
+                    <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+                      {bfError}
                     </div>
                   )}
 
-                  {bfGender === 'female' && (
+                  {/* Weight */}
+                  <div>
+                    <label className={labelClass}>Weight (KG)</label>
+                    <input type="number" step="0.1" value={bfWeight} onChange={e => setBfWeight(e.target.value)} placeholder="e.g. 75" className={inputClass} />
+                  </div>
+
+                  {/* Height */}
+                  <div>
+                    <label className={labelClass}>Height</label>
+                    <div className="flex gap-3">
+                      <select value={bfFt} onChange={e => setBfFt(e.target.value)} className={`${inputClass} appearance-none cursor-pointer flex-1`}>
+                        {[4,5,6,7].map(f => <option key={f} value={f} className="bg-black text-white">{f} Foot</option>)}
+                      </select>
+                      <select value={bfIn} onChange={e => setBfIn(e.target.value)} className={`${inputClass} appearance-none cursor-pointer flex-1`}>
+                        {Array.from({length: 12}).map((_, i) => <option key={i} value={i} className="bg-black text-white">{i} Inch</option>)}
+                      </select>
+                    </div>
+                    <p className={tipClass}>Measure barefoot, standing straight.</p>
+                  </div>
+
+                  {/* Waist & Neck (both genders) */}
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className={labelClass}>Forearm (Inch)</label>
-                      <input type="number" step="0.1" value={bfForearm} onChange={e => setBfForearm(e.target.value)} className={inputClass} />
+                      <label className={labelClass}>Waist (Inch)</label>
+                      <input type="number" step="0.1" value={bfWaist} onChange={e => setBfWaist(e.target.value)} placeholder="e.g. 34" className={inputClass} />
+                      <p className={tipClass}>{bfGender === 'male' ? 'At navel level.' : 'At narrowest point.'}</p>
                     </div>
+                    <div>
+                      <label className={labelClass}>Neck (Inch)</label>
+                      <input type="number" step="0.1" value={bfNeck} onChange={e => setBfNeck(e.target.value)} placeholder="e.g. 15" className={inputClass} />
+                      <p className={tipClass}>Just below Adam&apos;s apple.</p>
+                    </div>
+                  </div>
+
+                  {/* Hip — females only */}
+                  {bfGender === 'female' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                    >
+                      <label className={labelClass}>Hip (Inch)</label>
+                      <input type="number" step="0.1" value={bfHip} onChange={e => setBfHip(e.target.value)} placeholder="e.g. 38" className={inputClass} />
+                      <p className={tipClass}>At the widest point of your hips/buttocks.</p>
+                    </motion.div>
                   )}
 
-                  <button type="submit" className="btn-primary w-full justify-center mt-4 text-center">Calculate Body Fat</button>
+                  <button type="submit" className="btn-primary w-full justify-center mt-2 text-center">Calculate Body Fat</button>
                 </motion.form>
               )}
             </AnimatePresence>
@@ -431,21 +500,75 @@ export default function FitnessCalculator() {
               {activeTab === 'bodyfat' && (
                 <motion.div key="bf-res" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="w-full">
                   {!calcBf ? (
-                    <div className="p-8 text-center text-[rgba(240,240,240,0.4)]">
-                      <h3 className="font-display text-2xl uppercase mb-4 text-white">Estimate Body Fat</h3>
-                      <p>Grab a measuring tape and fill in your details to calculate your estimated body fat percentage.</p>
+                    <div className="p-8 text-center text-[rgba(240,240,240,0.4)] space-y-4">
+                      <h3 className="font-display text-2xl uppercase mb-2 text-white">US Navy Body Fat Method</h3>
+                      <p className="text-sm leading-relaxed">
+                        Grab a measuring tape and fill in your measurements on the left. This uses the same scientifically validated formula used by the U.S. military.
+                      </p>
+                      <div className="mt-6 space-y-2 text-left border border-[rgba(255,255,255,0.05)] p-4">
+                        <p className="text-[10px] uppercase tracking-widest text-[rgba(240,240,240,0.3)] mb-3">ACE Body Fat Categories</p>
+                        {bfGender === 'male' ? (
+                          <>
+                            <div className="flex justify-between text-xs"><span className="text-blue-400">Essential Fat</span><span>2 – 5%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-[var(--green)]">Athlete</span><span>6 – 13%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-[var(--green)]">Fitness</span><span>14 – 17%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-yellow-400">Average</span><span>18 – 24%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-red-400">Obese</span><span>25%+</span></div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="flex justify-between text-xs"><span className="text-blue-400">Essential Fat</span><span>10 – 13%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-[var(--green)]">Athlete</span><span>14 – 20%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-[var(--green)]">Fitness</span><span>21 – 24%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-yellow-400">Average</span><span>25 – 31%</span></div>
+                            <div className="flex justify-between text-xs"><span className="text-red-400">Obese</span><span>32%+</span></div>
+                          </>
+                        )}
+                      </div>
                     </div>
                   ) : (
-                    <div className="space-y-6">
-                      <div className="bg-[var(--surface-2)] border border-[rgba(26,255,107,0.2)] p-10 text-center relative overflow-hidden">
-                        <label className={labelClass}>Estimated Body Fat</label>
-                        <div className="font-display text-7xl text-[var(--green)] mt-4 mb-2">{calcBf}<span className="text-4xl">%</span></div>
-                        <div className="mt-6 flex justify-center">
-                          <span className={`px-4 py-1 text-xs font-bold uppercase tracking-wider ${calcBf <= (bfGender === 'male' ? 15 : 25) ? 'bg-[rgba(26,255,107,0.15)] text-[var(--green)]' : 'bg-[rgba(255,255,255,0.1)] text-white'}`}>
-                            {calcBf <= (bfGender === 'male' ? 15 : 25) ? 'Recommended Range' : 'Above Average'}
-                          </span>
+                    <div className="space-y-5">
+                      {/* Main BF% display */}
+                      <div className="bg-[var(--surface-2)] border border-[rgba(26,255,107,0.2)] p-8 text-center relative overflow-hidden">
+                        <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
+                          <span className="font-display text-[10rem] leading-none">BF</span>
                         </div>
+                        <label className={`${labelClass} justify-center`}>Estimated Body Fat</label>
+                        <div className="font-display text-7xl text-[var(--green)] mt-3 mb-4">
+                          {calcBf}<span className="text-4xl">%</span>
+                        </div>
+                        {/* ACE Category Badge */}
+                        {(() => {
+                          const cat = getBfCategory(calcBf, bfGender);
+                          return (
+                            <span className={`inline-flex items-center gap-2 px-4 py-1.5 border text-xs font-bold uppercase tracking-widest ${cat.bg} ${cat.color}`}>
+                              <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                              {cat.label}
+                            </span>
+                          );
+                        })()}
                       </div>
+
+                      {/* Lean / Fat Mass Breakdown */}
+                      {calcLeanMass !== null && calcFatMass !== null && (
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-[var(--surface-2)] border border-[rgba(255,255,255,0.06)] p-5 text-center">
+                            <label className={labelClass}>Lean Mass</label>
+                            <div className="font-display text-3xl text-white mt-1">{calcLeanMass} <span className="text-sm text-[rgba(240,240,240,0.4)]">kg</span></div>
+                            <p className="text-[10px] text-[rgba(240,240,240,0.3)] mt-1">Muscle, bone & water</p>
+                          </div>
+                          <div className="bg-[var(--surface-2)] border border-[rgba(255,255,255,0.06)] p-5 text-center">
+                            <label className={labelClass}>Fat Mass</label>
+                            <div className="font-display text-3xl text-orange-400 mt-1">{calcFatMass} <span className="text-sm text-[rgba(240,240,240,0.4)]">kg</span></div>
+                            <p className="text-[10px] text-[rgba(240,240,240,0.3)] mt-1">Total body fat weight</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Disclaimer */}
+                      <p className="text-[10px] text-[rgba(240,240,240,0.25)] text-center">
+                        U.S. Navy Method — estimated accuracy ±3–4%. Not a substitute for clinical measurement.
+                      </p>
 
                       <button onClick={useBfForBmr} className="btn-outline w-full justify-center">Use this in BMR Calculator &rarr;</button>
                     </div>
