@@ -6,7 +6,7 @@ import { eq, and } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function createSessionEvent(data: {
   title: string;
@@ -118,7 +118,7 @@ export async function sendSessionInvitations(sessionId: string, category: string
       }
 
       try {
-        await resend.emails.send({
+        await resend?.emails.send({
           from: 'Fitlife Gym <invites@fitlifebd.com>', // Note: Must verify domain in Resend
           to: user.email,
           subject: `You're Invited — ${session.title} at Fitlife Gym`,
