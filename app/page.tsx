@@ -20,6 +20,7 @@ const Transformations = nextDynamic(() => import("@/components/sections/Transfor
 const Gallery = nextDynamic(() => import("@/components/sections/Gallery"));
 const Trainers = nextDynamic(() => import("@/components/sections/Trainers"));
 const HireCoach = nextDynamic(() => import("@/components/sections/HireCoach"));
+const SessionsTeaser = nextDynamic(() => import("@/components/sections/SessionsTeaser"));
 
 export default async function Home() {
   let statsData: any = [];
@@ -68,6 +69,7 @@ export default async function Home() {
         <Services />
         <Trainers data={trainersData} />
         <HireCoach />
+        <SessionsTeaser />
         {/* <Pricing data={pricingData} /> */}
         <Transformations data={transformationsData} />
         <Branches data={branchesData} />

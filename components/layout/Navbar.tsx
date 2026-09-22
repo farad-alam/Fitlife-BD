@@ -4,13 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Trainers', href: '#trainers' },
-  { label: 'Hire Coach', href: '#hire-coach' },
-  // { label: 'Pricing', href: '#pricing' },
-  { label: 'Branches', href: '#branches' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Hire Coach', href: '/#hire-coach' },
+  { label: 'Branches', href: '/#branches' },
+  { label: 'Free Session', href: '/free-session' },
+  { label: 'Workshops', href: '/workshops' },
 ];
 
 export default function Navbar() {
@@ -80,12 +78,12 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#contact"
-            className="btn-primary text-sm px-5 py-2.5"
+          <Link
+            href="/free-session"
+            className="btn-primary text-sm px-5 py-2.5 whitespace-nowrap"
           >
-            Join Now
-          </a>
+            Join a Free Session
+          </Link>
         </nav>
 
         {/* Mobile Toggle */}
@@ -143,13 +141,13 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#contact"
+          <Link
+            href="/free-session"
             onClick={() => setOpen(false)}
             className="btn-primary w-full justify-center mt-2"
           >
-            Join Now
-          </a>
+            Join a Free Session
+          </Link>
         </div>
       </div>
     </header>

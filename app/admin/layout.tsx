@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 
 import Link from 'next/link';
-import { LogOut, Home, BarChart2, Mail, Tag, HelpCircle, Users, MapPin, Image as ImageIcon, Settings, Repeat } from 'lucide-react';
+import { LogOut, Home, BarChart2, Mail, Tag, HelpCircle, Users, MapPin, Image as ImageIcon, Settings, Repeat, Calendar, BookOpen } from 'lucide-react';
 import { signOut } from '@/lib/auth'; // Wait, server action sign out is tricky, we can use client component for the button or a server action form
 
 const navItems = [
@@ -12,6 +12,8 @@ const navItems = [
   { label: 'Pricing Plans', href: '/admin/pricing', icon: Tag },
   { label: 'FAQs', href: '/admin/faq', icon: HelpCircle },
   { label: 'Trainers', href: '/admin/trainers', icon: Users },
+  { label: 'Free Sessions', href: '/admin/sessions', icon: Calendar },
+  { label: 'Workshops', href: '/admin/workshops', icon: BookOpen },
   { label: 'Transformations', href: '/admin/transformations', icon: Repeat },
   { label: 'Branches', href: '/admin/branches', icon: MapPin },
   { label: 'Gallery', href: '/admin/gallery', icon: ImageIcon },

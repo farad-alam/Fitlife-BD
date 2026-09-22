@@ -1,8 +1,9 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-const headlines = ['TRAIN', 'TRANSFORM', 'DOMINATE'];
+const headlines = ['MEET A S TAJ', 'JOIN FREE SESSION', 'HIRE A COACH'];
 const bgImages = [
   '/images/hero-bg.png',
   '/images/hero_slider_2.png',
@@ -115,7 +116,7 @@ export default function Hero() {
               {headlines[idx]}
             </span>
             <span className="block" style={{ color: 'var(--text)', lineHeight: 0.85 }}>
-              YOUR BODY
+              YOUR BEST JOURNEY
             </span>
           </h1>
 
@@ -130,15 +131,15 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 mt-8 md:mt-10">
-            <a href="#contact" className="btn-primary text-base md:text-lg px-8 py-4">
-              Start Free Trial
+            <Link href="/free-session" className="btn-primary text-base md:text-lg px-8 py-4">
+              JOIN FREE SESSION
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-            </a>
-            <a href="#about" className="btn-outline text-base md:text-lg px-8 py-4">
-              Our Story
-            </a>
+            </Link>
+            <Link href="/#hire-coach" className="btn-outline text-base md:text-lg px-8 py-4">
+              HIRE A COACH
+            </Link>
           </div>
 
           {/* Stats row */}
