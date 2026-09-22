@@ -29,7 +29,10 @@ export default async function AdminSessionsPage() {
           <p className="text-sm font-mono">{dbError}</p>
         </div>
       ) : (
-        <SessionsClient initialEvents={events} initialRegistrations={registrations} />
+        <SessionsClient 
+          initialEvents={JSON.parse(JSON.stringify(events))} 
+          initialRegistrations={JSON.parse(JSON.stringify(registrations))} 
+        />
       )}
     </div>
   );
