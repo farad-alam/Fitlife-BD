@@ -225,71 +225,89 @@ export default function WorkshopsClient({ initialWorkshops, initialRegistrations
                   <tr>
                     <th className="px-6 py-4 font-medium">User / Date</th>
                     <th className="px-6 py-4 font-medium">Contact</th>
+                    <th className="px-6 py-4 font-medium">Amount</th>
                     <th className="px-6 py-4 font-medium">Payment Info</th>
                     <th className="px-6 py-4 font-medium">Status</th>
                     <th className="px-6 py-4 font-medium">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10">
-                  {filteredRegs.map((reg) => (
-                    <tr key={reg.id} className="hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-white">{reg.name}</div>
-                        <div className="text-xs">{new Date(reg.submittedAt).toLocaleDateString()}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-white">{reg.whatsappNumber}</div>
-                        <div className="text-xs text-gray-500">{reg.email}</div>
-                      </td>
-                      <td className="px-6 py-4">
-                        {reg.paymentOperator ? (
-                          <>
-                            <div className="flex gap-2 items-center mb-1">
-                              <span className="font-bold text-white text-xs">{reg.paymentOperator}</span>
-                              <span className="text-xs">to {reg.paymentToNumber}</span>
-                            </div>
-                            <div className="text-xs bg-black px-2 py-1 rounded border border-white/10 inline-block font-mono tracking-widest text-[var(--green)] mb-1">
-                              TXN: {reg.transactionId}
-                            </div>
-                            {reg.senderPhoneNumber && (
-                              <div className="text-xs text-gray-400">
-                                Sender: <span className="text-white">{reg.senderPhoneNumber}</span>
+                  {filteredRegs.map((reg) => {
+                    const targetWorkshop = workshops.find(w => w.id === reg.workshopId);
+                    return (
+                      <tr key={reg.id} className="hover:bg-white/5 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="font-medium text-white">{reg.name}</div>
+                          <div className="text-xs">{new Date(reg.submittedAt).toLocaleDateString()}</div>
+                          {targetWorkshop && filterWorkshopId === 'All' && (
+                            <div className="text-[11px] text-[var(--green)] mt-0.5 truncate max-w-[150px]">{targetWorkshop.title}</div>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-white">{reg.whatsappNumber}</div>
+                          <div className="text-xs text-gray-500">{reg.email}</div>
+                        </td>
+                        <td className="px-6 py-4">
+                          {targetWorkshop?.isFree || !reg.paymentOperator ? (
+                            <span className="px-2.5 py-1 bg-green-500/10 text-[var(--green)] border border-green-500/20 rounded text-xs font-bold uppercase tracking-wider">
+                              FREE
+                            </span>
+                          ) : (
+                            <span className="font-bold text-white text-sm">
+                              {targetWorkshop?.price || 'N/A'}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {reg.paymentOperator ? (
+                            <>
+                              <div className="flex gap-2 items-center mb-1">
+                                <span className="font-bold text-white text-xs">{reg.paymentOperator}</span>
+                                <span className="text-xs">to {reg.paymentToNumber}</span>
                               </div>
+                              <div className="text-xs bg-black px-2 py-1 rounded border border-white/10 inline-block font-mono tracking-widest text-[var(--green)] mb-1">
+                                TXN: {reg.transactionId}
+                              </div>
+                              {reg.senderPhoneNumber && (
+                                <div className="text-xs text-gray-400">
+                                  Sender: <span className="text-white">{reg.senderPhoneNumber}</span>
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <span className="text-xs text-gray-500 italic">Free Workshop</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {reg.paymentStatus === 'confirmed' && <span className="inline-flex items-center gap-1 text-green-400 bg-green-400/10 px-2 py-1 rounded text-xs font-bold"><CheckCircle className="w-3 h-3"/> Confirmed</span>}
+                          {reg.paymentStatus === 'pending' && <span className="inline-flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded text-xs font-bold">🟡 Pending</span>}
+                          {reg.paymentStatus === 'rejected' && <span className="inline-flex items-center gap-1 text-red-400 bg-red-400/10 px-2 py-1 rounded text-xs font-bold"><XCircle className="w-3 h-3"/> Rejected</span>}
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex gap-2">
+                            {reg.paymentStatus !== 'confirmed' && (
+                              <button onClick={() => handleStatusChange(reg.id, 'confirmed')} className="p-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 rounded" title="Confirm Payment">
+                                <Check className="w-4 h-4" />
+                              </button>
                             )}
-                          </>
-                        ) : (
-                          <span className="text-xs text-gray-500 italic">Free Workshop</span>
-                        )}
-                      </td>
-                      <td className="px-6 py-4">
-                        {reg.paymentStatus === 'confirmed' && <span className="inline-flex items-center gap-1 text-green-400 bg-green-400/10 px-2 py-1 rounded text-xs font-bold"><CheckCircle className="w-3 h-3"/> Confirmed</span>}
-                        {reg.paymentStatus === 'pending' && <span className="inline-flex items-center gap-1 text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded text-xs font-bold">🟡 Pending</span>}
-                        {reg.paymentStatus === 'rejected' && <span className="inline-flex items-center gap-1 text-red-400 bg-red-400/10 px-2 py-1 rounded text-xs font-bold"><XCircle className="w-3 h-3"/> Rejected</span>}
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2">
-                          {reg.paymentStatus !== 'confirmed' && (
-                            <button onClick={() => handleStatusChange(reg.id, 'confirmed')} className="p-2 bg-green-500/10 hover:bg-green-500/20 text-green-500 rounded" title="Confirm Payment">
-                              <Check className="w-4 h-4" />
-                            </button>
-                          )}
-                          {reg.paymentStatus !== 'rejected' && (
-                            <button onClick={() => handleStatusChange(reg.id, 'rejected')} className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded" title="Reject Payment">
-                              <X className="w-4 h-4" />
-                            </button>
-                          )}
-                          {reg.paymentStatus !== 'pending' && (
-                            <button onClick={() => handleStatusChange(reg.id, 'pending')} className="text-xs underline text-gray-500 hover:text-white px-2">
-                              Reset
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            {reg.paymentStatus !== 'rejected' && (
+                              <button onClick={() => handleStatusChange(reg.id, 'rejected')} className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded" title="Reject Payment">
+                                <X className="w-4 h-4" />
+                              </button>
+                            )}
+                            {reg.paymentStatus !== 'pending' && (
+                              <button onClick={() => handleStatusChange(reg.id, 'pending')} className="text-xs underline text-gray-500 hover:text-white px-2">
+                                Reset
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                   {filteredRegs.length === 0 && (
                     <tr>
-                      <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                      <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                         No registrations found.
                       </td>
                     </tr>
