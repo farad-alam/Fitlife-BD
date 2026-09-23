@@ -5,7 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import WorkshopsClient from './WorkshopsClient';
 
-export const revalidate = 0; // Fetch fresh data
+export const revalidate = 86400; // ISR: rebuild max once per 24 hours. Admin saves trigger immediate revalidation.
 
 export default async function WorkshopsPage() {
   let activeWorkshops: any[] = [];

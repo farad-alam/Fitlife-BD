@@ -5,7 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FreeSessionClient from './FreeSessionClient';
 
-export const revalidate = 0; // Ensure fresh data when fetching active session
+export const revalidate = 86400; // ISR: rebuild max once per 24 hours. Admin saves trigger immediate revalidation.
 
 export default async function FreeSessionPage() {
   let activeSession = null;
